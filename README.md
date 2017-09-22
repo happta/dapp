@@ -98,4 +98,5 @@ The app runs on the port 5005 (e.g: `http://localhost:5005`). If you want to use
 
 ```
 127.0.0.1 testrpc
+127.0.0.1 ipfs
 ```
