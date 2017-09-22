@@ -1,0 +1,47 @@
+app:
+  build: app/
+  ports:
+    - "5005:90"
+  volumes:
+    - "./app:/usr/share/nginx/html/"
+
+contracts:
+  build: contracts/
+  links:
+    - testrpc
+  volumes:
+    - "./contracts:/contracts"
+    - "/contracts/node_modules"
+
+testrpc:
+  image: harshjv/testrpc
+  ports:
+    - "8545:8545"
+  command: testrpc --mnemonic="such shoulder essay hire angle suit slot merge help cricket air ill"
+
+ipfs:
+  build: ipfs/
+  ports:
+    - 4001:4001
+    - 5001:5001
+    - 5002:8080
+  volumes:
+    - ./ipfs:/ipfs
+
+chromedriver:
+  image: selenium/standalone-chrome
+  links:
+    - testrpc
+    - ipfs
+    - app
+  ports:
+    - "4444:4444"
+
+test:
+  build: ./test
+  links:
+    - chromedriver
+  volumes:
+    - './test/:/test'
+    - '/test/node_modules'
+  command: sleep infinity

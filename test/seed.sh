@@ -1,0 +1,3 @@
+docker-compose run contracts node deploy.js "A test blog"
+docker-compose run contracts node publish.js 0x3240c5bac4d98855f6c32b1182942bd7d91cd7f0 QmUXz5JShQFoKL2u3Xjmf5TTUY69q2bCvsegDuiMhCHRkP
+docker-compose run contracts node publish.js 0x3240c5bac4d98855f6c32b1182942bd7d91cd7f0 Qmc8w8xj7YS8nfbSwV14Rqz8w53BDfPQSgSn4HPANmnNMy

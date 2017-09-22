@@ -1,0 +1,12 @@
+{
+  "name": "tests",
+  "version": "0.1.0",
+  "description": "Functional test suite",
+  "main": "test.js",
+  "scripts": {
+    "test": "nightwatch *.js"
+  },
+  "dependencies": {
+    "nightwatch": "^0.9.8"
+  }
+}

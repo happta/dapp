@@ -1,0 +1,19 @@
+{
+  "src_folders": ["."],
+  "output_folder": false,
+  "test_settings" : {
+    "default" : {
+      "launch_url": "http://app",
+      "selenium_port": 4444,
+      "selenium_host": "chromedriver",
+      "desiredCapabilities": {
+        "browserName": "chrome",
+        "javascriptEnabled": true
+      },
+      "screenshots": {
+        "enabled": true,
+        "path": "screenshots/"
+      }
+    }
+  }
+}

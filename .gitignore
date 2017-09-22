@@ -1,0 +1,5 @@
+contracts/config.js
+contracts/config.dev.js
+contracts/config.prod.js
+contracts/config.stag.js
+test/screenshots
