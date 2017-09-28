@@ -1,5 +1,7 @@
 module.exports = {
   CONTRACT: "0x3240c5bac4d98855f6c32b1182942bd7d91cd7f0",
+  POST_TITLE: "Hello World",
+  POST_CONTENT: "It supports Markdown of course",
 
   'There are two posts': function(browser) {
     App.goToBlog(this.CONTRACT, browser);
@@ -9,6 +11,14 @@ module.exports = {
 
     browser.end();
   },
+
+  'The post is displayed when you click on it': function(browser) {
+    App.goToBlog(this.CONTRACT, browser);
+
+    App.clickOnPostWithTitle(this.POST_TITLE, browser);
+
+    App.expectToHaveContent(this.POST_CONTENT, browser)
+  }
 }
 
 var App = {
@@ -23,8 +33,17 @@ var App = {
       saveScreenshot('./screenshots/home.png')
   },
 
+  clickOnPostWithTitle: function(title, browser) {
+    browser.waitForElementVisible('li[data-title="' + title + '"]', this.TIMEOUT)
+    browser.click('li[data-title="' + title + '"]')
+  },
+
   expectToHavePost: function(post, browser) {
     browser.assert.containsText("body", this.titleFor(post.title))
+  },
+
+  expectToHaveContent: function(text, browser) {
+    browser.assert.containsText("body", text)
   },
 
   titleFor: function(title) {

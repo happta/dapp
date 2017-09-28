@@ -1,4 +1,5 @@
 var address = findGetParameter('address');
+var converter = new showdown.Converter();
 
 if(address == undefined) {
   contract_selection = new ContractSelection();
