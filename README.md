@@ -1,3 +1,5 @@
+![Build Status](https://api.travis-ci.org/MiguelBel/DecentralizedBlog.svg?branch=travis-ci-integration)
+
 # Decentralized Blog
 
 This is a proof of concept and is not ready to use yet.
