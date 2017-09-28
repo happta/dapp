@@ -1,0 +1,17 @@
+sudo: required
+
+services:
+  - docker
+
+before_script:
+  - docker-compose down
+  - docker-compose up --build -d
+  - cp contracts/examples/config.js contracts/config.js
+  - ./test/seed.sh
+
+script:
+  - docker-compose run contracts npm test
+  - docker-compose exec test npm test
+
+after_script:
+  - docker-compose down
