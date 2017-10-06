@@ -1,0 +1,17 @@
+<html>
+<head>
+  <title>react-webpack-boilerplate</title>
+</head>
+  <body>
+
+  <div id="js-main"></div>
+
+  <%- body %>
+
+  <% if (env.production) { %>
+    <script async src="<%= env.assets.main.js %>"></script>
+  <% } else { %>
+    <script src="http://app-react:3000/client/main.js"></script>
+  <% } %>
+  </body>
+</html>

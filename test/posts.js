@@ -18,19 +18,20 @@ module.exports = {
     App.clickOnPostWithTitle(this.POST_TITLE, browser);
 
     App.expectToHaveContent(this.POST_CONTENT, browser)
+
+    browser.end();
   }
 }
 
 var App = {
-  BLOG_URL: "http://app:90/?address=",
+  BLOG_URL: "http://app-react:3001/",
   TIMEOUT: 3000,
 
   goToBlog: function(address, browser) {
     browser.
       url(this.BLOG_URL + address).
       waitForElementVisible("body", this.TIMEOUT).
-      pause(3000).
-      saveScreenshot('./screenshots/home.png')
+      pause(3000)
   },
 
   clickOnPostWithTitle: function(title, browser) {

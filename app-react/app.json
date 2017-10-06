@@ -1,0 +1,26 @@
+{
+  "name": "react-webpack-boilerplate",
+  "description": "Simple production-ready boilerplate for React and Webpack (SASS and React hot reloading)",
+  "keywords": [
+    "react",
+    "webpack",
+    "boilerplate",
+    "production",
+    "sass",
+    "hot",
+    "reload"
+  ],
+  "website": "http://srn.io",
+  "repository": "https://github.com/srn/react-webpack-boilerplate",
+  "logo": "http://i.imgur.com/ydf7myp.png",
+  "env": {
+    "NODE_ENV": {
+      "description": "Set the `NODE_ENV` environment variable to `production` to disable debugging etc.",
+      "value": "production"
+    },
+    "NPM_CONFIG_PRODUCTION": {
+      "description": "By default Heroku is not installing `devDependencies`, so let's do that.",
+      "value": "false"
+    }
+  }
+}

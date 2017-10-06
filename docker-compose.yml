@@ -5,6 +5,16 @@ app:
   volumes:
     - "./app:/usr/share/nginx/html/"
 
+app-react:
+  build: app-react/
+  ports:
+    - "3000:3000"
+    - "3001:3001"
+  volumes:
+    - './app-react:/app-react'
+    - '/app-react/node_modules'
+  command: npm start
+
 contracts:
   build: contracts/
   links:
@@ -34,6 +44,7 @@ chromedriver:
     - testrpc
     - ipfs
     - app
+    - app-react
   ports:
     - "4444:4444"
 

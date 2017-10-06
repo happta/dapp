@@ -29,13 +29,13 @@ module.exports = {
 
 var App = {
   TIMEOUT: 3000,
-  CONTRACT_SELECTOR_URL: "http://app:90/",
+  CONTRACT_SELECTOR_URL: "http://app-react:3001",
   UNEXISTING_BLOG_ALERT: "There is no blog associated to this contract.",
 
   goToContractSelector: function(browser) {
     return browser.
       url(this.CONTRACT_SELECTOR_URL).
-      waitForElementVisible("body", this.TIMEOUT)
+      waitForElementVisible("#contractInput", this.TIMEOUT)
   },
 
   fillContractAddress: function(address, browser) {
