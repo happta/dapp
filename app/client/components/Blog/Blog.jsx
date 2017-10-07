@@ -2,37 +2,53 @@ import React, { Component } from 'react';
 import Contract from './Contract'
 import NotFound from './NotFound'
 import Entries from './Entries'
+import Spinner from './Spinner'
+import Title from './Title'
 
 class Blog extends Component {
   constructor(props) {
     super(props);
 
-    this.address = props.match.params.address;
+    const address = props.match.params.address;
+    this.contract = new Contract(address);
+
+    this.state = {
+      isAValidBlog: undefined
+    }
+
+    this.handleBlogValidity = this.handleBlogValidity.bind(this);
+  }
+
+  componentDidMount() {
+    this.contract.checkIfItsAValidBlog(this.handleBlogValidity);
   }
 
   render() {
-    const contract = new Contract(this.address);
-
-    const isNotAValidBlog = !contract.isABlog();
-
-    if(isNotAValidBlog) {
-      return <NotFound />;
+    if(this.state.isAValidBlog == undefined) {
+      return <Spinner />;
     }
 
-    const posts = contract.posts();
-    const title = contract.title();
+    if(this.state.isAValidBlog == false) {
+      return <NotFound />;
+    }
 
     return (
       <div>
         <a onClick={this.goToContractSelector.bind(this)}>Back</a>
-        <h1 id="titleContent">{title}</h1>
-        <Entries posts={posts} />
+        <Title contract={this.contract} />
+        <Entries contract={this.contract} />
       </div>
     )
   }
 
   goToContractSelector() {
     this.props.history.push('/');
+  }
+
+  handleBlogValidity(blogValidity) {
+    this.setState({
+      isAValidBlog: blogValidity
+    });
   }
 }
 

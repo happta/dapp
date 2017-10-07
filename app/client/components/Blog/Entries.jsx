@@ -8,52 +8,50 @@ class Entries extends Component {
     super(props);
 
     this.state = {
-      posts: []
+      posts: [],
+      postsLoading: true,
+      postsCount: -1
     }
+
+    this.contract = this.props.contract;
+
+    this.handlePostCount = this.handlePostCount.bind(this)
+    this.handlePostLoad = this.handlePostLoad.bind(this)
   }
 
   componentDidMount() {
-    const posts = this.props.posts;
-
-    const ipfsURL = { host: 'ipfs', port: '5001', protocol: 'http' };
-
-    ipfs.setProvider(ipfsURL);
-
-    posts.forEach(function(post) {
-      const identifier = post.identifier
-
-      ipfs.cat(identifier, this.loadContent(post).bind(this));
-    }.bind(this));
+    this.contract.countPosts(this.handlePostCount)
+    this.contract.loadPosts(this.handlePostLoad)
   }
 
-  loadContent(post) {
-    return function(err, buffer) {
-      const rawContent = buffer.toString();
-      const content = JSON.parse(rawContent);
+  handlePostLoad(post) {
+    const posts = this.state.posts
+    posts.push(post);
 
-      post.title = content.title
-      post.content = content.content
+    this.setState({ posts: posts }, this.checkIfAllPostsAreLoaded);
+  }
 
-        const allPosts = this.state.posts;
-
-      allPosts.push(post);
-
+  checkIfAllPostsAreLoaded() {
+    if(this.state.posts.length == this.state.postsCount) {
       this.setState({
-        posts: allPosts
+        postsLoading: false
       });
-    };
+    }
+  }
+
+  handlePostCount(count) {
+    this.setState({
+      postsCount: count
+    })
   }
 
   render() {
-    const postsToLoadCount = this.props.posts.length;
-    const loadedPostsCount = this.state.posts.length;
-
-    if(postsToLoadCount != loadedPostsCount) {
+    if(this.state.postsLoading) {
       return <Spinner />;
     }
 
     const entries = this.state.posts.map(function(post) {
-      return <Entry entry={post} key={post.identifier} />
+      return <Entry entry={post} key={`${post.identifier}${post.date}`} />
     }.bind(this));
 
     return (

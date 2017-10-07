@@ -45,7 +45,7 @@ class Entry extends Component {
     const title = entry.title;
 
     return (
-      <li key={entry.identifier} onClick={this.openModal} data-title={title}>
+      <li onClick={this.openModal} data-title={title}>
         {this.formatDate(entry.date)} | {title}
 
         <Modal
