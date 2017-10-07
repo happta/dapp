@@ -42,12 +42,20 @@ class Entries extends Component {
   handlePostCount(count) {
     this.setState({
       postsCount: count
-    })
+    }, this.checkIfAllPostsAreLoaded)
   }
 
   render() {
     if(this.state.postsLoading) {
       return <Spinner />;
+    }
+
+    if(this.state.posts.length == 0) {
+      return (
+        <div>
+          There are no posts yet
+        </div>
+      )
     }
 
     const entries = this.state.posts.map(function(post) {
