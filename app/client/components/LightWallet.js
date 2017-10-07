@@ -1,6 +1,6 @@
 import Web3 from 'web3'
 
-class Web3Service {
+class LightWallet {
   client() {
     var defaultEndpoint = "http://testrpc:8545";
 
@@ -24,4 +24,4 @@ class Web3Service {
   }
 }
 
-export default Web3Service;
+export default LightWallet;

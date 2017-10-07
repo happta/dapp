@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Web3Service from '../Web3Service'
+import LightWallet from '../LightWallet'
 
 class NetworkBadge extends Component {
   constructor(props) {
@@ -9,7 +9,7 @@ class NetworkBadge extends Component {
       networkName: undefined
     }
 
-    this.lightWallet = new Web3Service();
+    this.lightWallet = new LightWallet();
   }
 
   componentDidMount() {
@@ -38,7 +38,7 @@ class NetworkBadge extends Component {
 
     if(network == undefined) {
       this.setState({
-        networkName: this.defaultNetwork().name
+        networkName: this.unknownNetwork().name
       });
     } else {
       this.setState({
@@ -47,7 +47,7 @@ class NetworkBadge extends Component {
     }
   }
 
-  defaultNetwork() {
+  unknownNetwork() {
     return {
       name: 'Privatenet',
       id: 0
