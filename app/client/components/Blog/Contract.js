@@ -53,10 +53,18 @@ class Contract {
 
 
   checkIfItsAValidBlog(callback) {
-    try {
-      this._remoteInstance().VERSION.call(() => {});
+    const supportedVersions = [
+      '0.1'
+    ]
 
-      callback(true)
+    try {
+      this._remoteInstance().VERSION.call((error, version) => {
+        if(supportedVersions.indexOf(version) != -1) {
+          callback(true);
+        } else {
+          callback(false);
+        }
+      });
     } catch(err) {
       console.log(err);
 

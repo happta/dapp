@@ -6,7 +6,7 @@ class NetworkBadge extends Component {
     super(props);
 
     this.state = {
-      networkName: undefined
+      networkName: '...'
     }
 
     this.lightWallet = new LightWallet();
