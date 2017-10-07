@@ -5,7 +5,7 @@ import 'styles/main.scss';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Index from 'components/Index/Index';
+import App from 'components/App/App';
 
 import { BrowserRouter } from 'react-router-dom'
 
@@ -17,6 +17,6 @@ ipfs.setProvider(ipfsURL);
 
 ReactDOM.render((
   <BrowserRouter>
-    <Index />
+    <App />
   </BrowserRouter>
 ), document.getElementById('js-main'))

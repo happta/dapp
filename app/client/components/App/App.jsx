@@ -5,7 +5,7 @@ import Blog from '../Blog/Blog'
 
 import { Switch, Route } from 'react-router-dom'
 
-class IndexComponent extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
   }
@@ -20,4 +20,4 @@ class IndexComponent extends Component {
   }
 }
 
-export default IndexComponent;
+export default App;
