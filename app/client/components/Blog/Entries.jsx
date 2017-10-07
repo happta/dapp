@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ipfs from 'ipfs-js'
 import Entry from './Entry'
+import Spinner from './Spinner'
 
 class Entries extends Component {
   constructor(props) {
@@ -44,6 +45,13 @@ class Entries extends Component {
   }
 
   render() {
+    const postsToLoadCount = this.props.posts.length;
+    const loadedPostsCount = this.state.posts.length;
+
+    if(postsToLoadCount != loadedPostsCount) {
+      return <Spinner />;
+    }
+
     const entries = this.state.posts.map(function(post) {
       return <Entry entry={post} key={post.identifier} />
     }.bind(this));
