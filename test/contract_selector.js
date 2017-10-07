@@ -29,7 +29,7 @@ module.exports = {
 
 var App = {
   TIMEOUT: 3000,
-  CONTRACT_SELECTOR_URL: "http://app-react:3001",
+  CONTRACT_SELECTOR_URL: "http://app:3001",
   UNEXISTING_BLOG_ALERT: "There is no blog associated to this contract.",
 
   goToContractSelector: function(browser) {

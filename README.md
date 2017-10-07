@@ -96,9 +96,10 @@ You can run all the tests executing the script:
 
 ## How can I use the app locally?
 
-The app runs on the port 5005 (e.g: `http://localhost:5005`). If you want to use the app add this configuration to the `/etc/hosts` file:
+The app runs on the port 3001 (e.g: `http://localhost:3001`). If you want to use the app add this configuration to the `/etc/hosts` file:
 
 ```
 127.0.0.1 testrpc
 127.0.0.1 ipfs
+127.0.0.1 app
 ```

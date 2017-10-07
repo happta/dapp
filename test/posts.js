@@ -1,6 +1,6 @@
 module.exports = {
   CONTRACT: "0x3240c5bac4d98855f6c32b1182942bd7d91cd7f0",
-  POST_TITLE: "Hello World",
+  POST_TITLE: "Another Blog Post",
   POST_CONTENT: "It supports Markdown of course",
 
   'There are two posts': function(browser) {
@@ -24,7 +24,7 @@ module.exports = {
 }
 
 var App = {
-  BLOG_URL: "http://app-react:3001/",
+  BLOG_URL: "http://app:3001/",
   TIMEOUT: 3000,
 
   goToBlog: function(address, browser) {
@@ -40,6 +40,7 @@ var App = {
   },
 
   expectToHavePost: function(post, browser) {
+    browser.pause(1000);
     browser.assert.containsText("body", this.titleFor(post.title))
   },
 

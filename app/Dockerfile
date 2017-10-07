@@ -1,8 +1,10 @@
-FROM kyma/docker-nginx
+FROM node:8.6
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY . /usr/share/nginx/html/
+RUN mkdir -p /app
 
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+COPY package.json /app/package.json
+COPY webpack.*.js /app/
 
-CMD service nginx start
+WORKDIR /app
+
+RUN npm install
