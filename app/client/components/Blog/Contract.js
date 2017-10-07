@@ -1,4 +1,4 @@
-import Web3Service from './Web3Service'
+import Web3Service from '../Web3Service'
 import ipfs from 'ipfs-js'
 
 class Contract {

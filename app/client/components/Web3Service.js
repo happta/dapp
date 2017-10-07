@@ -4,7 +4,7 @@ class Web3Service {
   client() {
     var defaultEndpoint = "http://testrpc:8545";
 
-    if (typeof web3 == 'undefined') {
+    if (typeof web3 == "undefined") {
       console.log("Consider trying Metamask...");
 
       return (
@@ -15,6 +15,12 @@ class Web3Service {
     } else {
       return new Web3(web3.currentProvider);
     }
+  }
+
+  networkId(callback) {
+    this.client().version.getNetwork((error, networkId) => {
+      callback(networkId)
+    });
   }
 }
 
