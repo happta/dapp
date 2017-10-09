@@ -1,5 +1,6 @@
 import LightWallet from '../LightWallet'
 import ipfs from 'ipfs-js'
+import Settings from '../Settings/Settings'
 
 class Contract {
   constructor(address) {
@@ -38,6 +39,12 @@ class Contract {
         identifier: record[0],
         date: new Date(record[1] * 1000)
       }
+
+      const settings = new Settings();
+
+      let ipfsNode = { host: settings.host(), port: settings.port(), protocol: settings.protocol() };
+
+      ipfs.setProvider(ipfsNode);
 
       ipfs.cat(post.identifier, function(error, buffer) {
         const rawContent = buffer.toString();

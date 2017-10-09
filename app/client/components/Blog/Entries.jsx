@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ipfs from 'ipfs-js'
 import Entry from './Entry'
 import Spinner from './Spinner'
 
