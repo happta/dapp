@@ -5,6 +5,11 @@ body {
   font-family: "Helvetica Neue", serif;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 // Spinner
 .loader,
 .loader:before,

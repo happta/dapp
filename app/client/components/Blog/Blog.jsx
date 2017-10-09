@@ -34,7 +34,6 @@ class Blog extends Component {
 
     return (
       <div>
-        <a onClick={this.goToContractSelector.bind(this)}>Back</a>
         <Title contract={this.contract} />
         <Entries contract={this.contract} />
       </div>
