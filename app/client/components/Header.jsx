@@ -18,7 +18,7 @@ class Header extends Component {
             <NavLink to={`/${network.reference}/settings`} id="goToSettings">Settings</NavLink>
           </li>
           <li>
-            <NetworkBadge network={network} />
+            <NetworkBadge network={network} lightWallet={this.props.lightWallet} />
           </li>
         </ul>
       </div>

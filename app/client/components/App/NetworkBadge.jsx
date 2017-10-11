@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import LightWallet from '../LightWallet'
 
 import { withRouter } from 'react-router';
 
@@ -7,7 +6,7 @@ class NetworkBadge extends Component {
   constructor(props) {
     super(props);
 
-    const lightWallet = new LightWallet();
+    const lightWallet = this.props.lightWallet;
 
     this.networks = lightWallet.networks();
   }

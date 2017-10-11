@@ -23,20 +23,21 @@ class App extends Component {
     if(!isAValidNetwork) {
       return (
         <div>
-          We do not support that network
+          We do not support that network.
         </div>
       )
     }
 
     const network = this.lightWallet.findNetworkByReference(networkReference);
+    const lightWalletClient = this.lightWallet.client(network.reference)
 
     return (
       <div>
-        <Header network={network} />
+        <Header network={network} lightWallet={this.lightWallet} />
 
         <Switch>
           <Route path="/:network/settings" exact component={Settings} />
-          <Route path="/:network/:address" component={Blog} />
+          <Route path="/:network/:address" render={(props) => (<Blog {...props} lightWalletClient={lightWalletClient} />)} />
           <Route path="/:network" component={ContractSelector} />
         </Switch>
       </div>

@@ -9,10 +9,10 @@ class Blog extends Component {
   constructor(props) {
     super(props);
 
-    const network = props.match.params.network;
-    const address = props.match.params.address;
+    const address = this.props.match.params.address;
+    const lightWalletClient = this.props.lightWalletClient;
 
-    this.contract = new Contract(network, address);
+    this.contract = new Contract(lightWalletClient, address);
 
     this.state = {
       isAValidBlog: undefined
