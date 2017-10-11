@@ -9,8 +9,10 @@ class Blog extends Component {
   constructor(props) {
     super(props);
 
+    const network = props.match.params.network;
     const address = props.match.params.address;
-    this.contract = new Contract(address);
+
+    this.contract = new Contract(network, address);
 
     this.state = {
       isAValidBlog: undefined

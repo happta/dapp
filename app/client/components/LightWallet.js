@@ -1,26 +1,61 @@
 import Web3 from 'web3'
 
 class LightWallet {
-  client() {
-    var defaultEndpoint = "http://testrpc:8545";
+  client(networkReference) {
+    const network = this.findNetworkByReference(networkReference);
 
-    if (typeof web3 == "undefined") {
-      console.log("Consider trying Metamask...");
-
-      return (
-        new Web3(
-          new Web3.providers.HttpProvider(defaultEndpoint)
-        )
+    return (
+      new Web3(
+        new Web3.providers.HttpProvider(network.endpoint)
       )
-    } else {
-      return new Web3(web3.currentProvider);
-    }
+    )
   }
 
-  networkId(callback) {
-    this.client().version.getNetwork((error, networkId) => {
-      callback(networkId)
-    });
+  isAValidNetwork(networkReference) {
+    return (this.findNetworkByReference(networkReference) != undefined)
+  }
+
+  findNetworkByReference(reference) {
+    return (
+      this.networks().find(function(network) {
+        return network.reference == reference
+      })
+    );
+  }
+
+  networks() {
+    return ([
+      {
+        name: 'Mainnet',
+        reference: 'mainnet',
+        endpoint: 'https://mainnet.infura.io/',
+        id: 1
+      },
+      {
+        name: 'Ropsten',
+        reference: 'ropsten',
+        endpoint: 'https://ropsten.infura.io/',
+        id: 3
+      },
+      {
+        name: 'Rinkerby',
+        reference: 'rinkerby',
+        endpoint: 'https://rinkerby.infura.io/',
+        id: 4
+      },
+      {
+        name: 'Kovan',
+        reference: 'kovan',
+        endpoint: 'https://kovan.infura.io/',
+        id: 43
+      },
+      {
+        name: 'Privatenet',
+        reference: 'privatenet',
+        endpoint: 'http://testrpc:8545',
+        id: 999999
+      }
+    ]);
   }
 }
 

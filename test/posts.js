@@ -24,7 +24,7 @@ module.exports = {
 }
 
 var App = {
-  BLOG_URL: "http://app:3001/",
+  BLOG_URL: "http://app:3001/privatenet/",
   TIMEOUT: 3000,
 
   goToBlog: function(address, browser) {

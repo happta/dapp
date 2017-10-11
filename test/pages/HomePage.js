@@ -4,7 +4,7 @@ class HomePage {
     this.timeout = 3000
 
     if(straight) {
-      const url = "http://app:3001/"
+      const url = "http://app:3001/privatenet"
       this.browser.
         url(url).
         waitForElementVisible("body", this.timeout)

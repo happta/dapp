@@ -6,17 +6,19 @@ import NetworkBadge from './App/NetworkBadge'
 
 class Header extends Component {
   render() {
+    const network = this.props.network;
+
     return (
       <div>
         <ul>
           <li>
-            <NavLink to="/" id="goToHome">Home</NavLink>
+            <NavLink to={`/${network.reference}`} id="goToHome">Home</NavLink>
           </li>
           <li>
-            <NavLink to="/settings" id="goToSettings">Settings</NavLink>
+            <NavLink to={`/${network.reference}/settings`} id="goToSettings">Settings</NavLink>
           </li>
           <li>
-            <NetworkBadge />
+            <NetworkBadge network={network} />
           </li>
         </ul>
       </div>

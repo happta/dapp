@@ -4,7 +4,7 @@ class SettingsPage {
     this.timeout = 3000
 
     if(straight) {
-      const url = "http://app:3001/settings"
+      const url = "http://app:3001/privatenet/settings"
       this.browser.
         url(url).
         waitForElementVisible("body", this.timeout)

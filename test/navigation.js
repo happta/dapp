@@ -5,7 +5,6 @@ module.exports = {
   'The initial page is the contract selector': function(browser) {
     const homePage = new HomePage(browser)
 
-    browser.saveScreenshot('./home.png');
     homePage.expectToBeInHomePage();
 
     browser.end();

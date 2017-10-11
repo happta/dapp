@@ -20,7 +20,8 @@ class ContractSelector extends Component {
   goToContract() {
     const addressContainer = document.getElementById("contractInput");
     const address = addressContainer.value;
-    const route = `/${address}`
+    const network = this.props.match.params.network;
+    const route = `/${network}/${address}`;
 
     this.props.history.push(route);
   }

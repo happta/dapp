@@ -7,10 +7,13 @@ import ReactDOM from 'react-dom';
 
 import App from 'components/App/App';
 
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 
 ReactDOM.render((
   <BrowserRouter>
-    <App />
+    <Switch>
+      <Redirect from="/" exact to="/mainnet" />
+      <Route path="/:network" component={App} />
+    </Switch>
   </BrowserRouter>
 ), document.getElementById('js-main'))
