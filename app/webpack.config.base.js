@@ -52,7 +52,8 @@ module.exports = {
     loaders: [
       {test: /\.scss$/, loader: 'style!css!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded'},
       {test: /\.json$/, loader: 'json-loader'},
-      { test: /\.css$/, loader: 'style-loader!css-loader' }
+      { test: /\.css$/, loader: 'style-loader!css-loader' },
+      { test: /\.sol$/, loaders: ['solc'] }
     ],
 
     noParse: /\.min\.js/

@@ -18,7 +18,10 @@ class Header extends Component {
             <NavLink to={`/${network.reference}/settings`} id="goToSettings">Settings</NavLink>
           </li>
           <li>
-            <NetworkBadge network={network} lightWallet={this.props.lightWallet} />
+            <NetworkBadge network={network} selectionDisabled={this.props.writerModeEnabled} lightWallet={this.props.lightWallet} />
+          </li>
+          <li>
+            Publisher mode: <input type="checkbox" id="writerModeEnabled" onChange={this.props.handleWriterMode} disabled={!this.props.lightWallet.isPublisherModeAvailable()}/>
           </li>
         </ul>
       </div>

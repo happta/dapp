@@ -30,6 +30,8 @@
     "react-router-dom": "4.2.2",
     "showdown": "1.7.6",
     "web3": "^0.20.0",
+    "solc-loader": "1.1.1",
+    "web3-loader": "1.1.2",
     "webpack": "1.12.12"
   },
   "devDependencies": {

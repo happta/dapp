@@ -12,6 +12,14 @@ class NetworkBadge extends Component {
   }
 
   render() {
+    if(this.props.selectionDisabled) {
+      return (
+        <div>
+          {this.props.network.name}
+        </div>
+      )
+    }
+
     const networkOptions = this.networks.map(function(network){
       return <option key={network.reference} selected={this.props.network.reference == network.reference}>{network.name}</option>
     }.bind(this));

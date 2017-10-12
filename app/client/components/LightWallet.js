@@ -11,6 +11,14 @@ class LightWallet {
     )
   }
 
+  publisherClient() {
+    return new Web3(web3.currentProvider);
+  }
+
+  isPublisherModeAvailable() {
+    return typeof web3 != "undefined"
+  }
+
   isAValidNetwork(networkReference) {
     return (this.findNetworkByReference(networkReference) != undefined)
   }
@@ -21,6 +29,24 @@ class LightWallet {
         return network.reference == reference
       })
     );
+  }
+
+  findNetworkByIdWithFallback(id) {
+    const network = this.networks().find(function(network) {
+      return network.id == id
+    });
+
+    return network || this.fallbackNetwork();
+  }
+
+  fallbackNetwork() {
+    return this.findNetworkByReference('privatenet');
+  }
+
+  networkId(client, callback) {
+    client.version.getNetwork((error, networkId) => {
+      callback(networkId)
+    });
   }
 
   networks() {
@@ -47,7 +73,7 @@ class LightWallet {
         name: 'Kovan',
         reference: 'kovan',
         endpoint: 'https://kovan.infura.io/',
-        id: 43
+        id: 42
       },
       {
         name: 'Privatenet',
