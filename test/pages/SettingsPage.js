@@ -12,7 +12,7 @@ class SettingsPage {
   }
 
   expectToBeInSettingsPage() {
-    this.browser.assert.containsText("body", "Reset to default node");
+    this.browser.assert.containsText("body", "RESET TO DEFAULT NODE");
   }
 
   goToHomePage() {

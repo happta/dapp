@@ -35,8 +35,8 @@ var App = {
   },
 
   clickOnPostWithTitle: function(title, browser) {
-    browser.waitForElementVisible('li[data-title="' + title + '"]', this.TIMEOUT)
-    browser.click('li[data-title="' + title + '"]')
+    browser.waitForElementVisible('div[data-title="' + title + '"]', this.TIMEOUT)
+    browser.click('div[data-title="' + title + '"]')
   },
 
   expectToHavePost: function(post, browser) {
