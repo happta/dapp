@@ -26,19 +26,23 @@ class Settings extends Component {
 
   render() {
     return (
-      <div>
-        <h2>Settings Page {this.state.wadus}</h2>
-        <div>
-          IPFS Node Host: <input type="text" value={this.state.host} id="hostField" onChange={this.changeHost} />
+      <div className="container formsContainer">
+        <h2 className="settingsTitle">Settings Page {this.state.wadus}</h2>
+        <div className="separator"></div>
+        <div className="FormGroup">
+          <label>IPFS Node host:</label>
+          <input type="text" className="Input" value={this.state.host} id="hostField" onChange={this.changeHost} />
         </div>
-        <div>
-          IPFS Node Port: <input type="text" value={this.state.port} id="portField" onChange={this.changePort} />
+        <div className="FormGroup">
+          <label>IPFS Node port:</label>
+          <input type="text" className="Input" value={this.state.port} id="portField" onChange={this.changePort} />
         </div>
-        <div>
-          IPFS Node Protocol: <input type="text" value={this.state.protocol} id="protocolField" onChange={this.changeProtocol} />
+        <div className="FormGroup">
+          <label>IPFS Node protocol:</label>
+          <input type="text" className="Input" value={this.state.protocol} id="protocolField" onChange={this.changeProtocol} />
         </div>
-        <div>
-          <button onClick={this.reset} id="resetSettings">Reset to default node</button>
+        <div className="FormGroup">
+          <button className="Button Button--primary Button--block" onClick={this.reset} id="resetSettings">Reset to default node</button>
         </div>
       </div>
     )

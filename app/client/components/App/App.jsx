@@ -6,7 +6,8 @@ import Header from '../Header'
 import Settings from '../Settings/Settings'
 import LightWallet from '../LightWallet'
 
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, NavLink } from 'react-router-dom'
+import css from '../../styles/flystyles.min.css'
 
 class App extends Component {
   constructor(props) {
@@ -41,8 +42,10 @@ class App extends Component {
 
     if(!isAValidNetwork) {
       return (
-        <div>
-          We do not support that network.
+        <div className="container invalidNetwork">
+          <div className="Alert Alert--danger invalidNetwork" role="alert">
+            We do not support that network. <NavLink to="/">Go to home</NavLink>.
+          </div>
         </div>
       )
     }

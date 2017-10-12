@@ -25,7 +25,10 @@ class Title extends Component {
     }
 
     return (
-      <h1 id="titleContent">{this.state.title}</h1>
+      <div>
+        <h1 className="blogTitle" id="titleContent">{this.state.title}</h1>
+        <div className="separator"></div>
+      </div>
     )
   }
 

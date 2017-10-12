@@ -51,9 +51,10 @@ class Entries extends Component {
 
     if(this.state.posts.length == 0) {
       return (
-        <div>
+        <div className="Alert Alert--info" role="alert">
           There are no posts yet
         </div>
+
       )
     }
 

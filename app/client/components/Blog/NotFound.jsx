@@ -8,8 +8,12 @@ class NotFound extends Component {
 
   render() {
     return (
-      <div id="#titleContent">
-        {this.message}
+      <div className="container" id="#titleContent">
+        <div className="notFoundMessage blogContainer">
+          <div className="Alert Alert--warning" role="alert">
+            {this.message}
+          </div>
+        </div>
       </div>
     )
   }

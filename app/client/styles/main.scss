@@ -10,6 +10,131 @@ a {
   color: black;
 }
 
+.invalidNetwork {
+  margin-top: 10px;
+}
+
+// ContractSelector
+.container {
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
+.formsContainer {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.contractSelector {
+  text-align: center;
+}
+
+.contractInput {
+  max-width: 400px;
+}
+
+.contractSelectorFormContainer {
+  display: flex;
+}
+
+.contractSelectorFormContainer input{
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-right: none;
+}
+
+.contractSelectorFormContainer button{
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+// Blog
+
+.blogContainer {
+  width: 60%;
+  margin: 0 auto;
+}
+
+.blogTitle {
+  font-size: 36px;
+  text-align: center;
+  font-weight: 400;
+}
+
+.entryTitle {
+  cursor: pointer;
+}
+
+// // Not Found
+
+.notFoundMessage {
+  text-align: center;
+}
+
+// Header
+.header {
+  border-bottom: 1px solid rgb(223, 223, 223);
+}
+
+.menuContainer {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.logotype {
+  font-size: 30px;
+  font-family: roboto;
+  font-weight: 900;
+  color: #3B3B3B;
+}
+
+.menuButton {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.menuButton:hover {
+  text-decoration: none;
+}
+
+.menuButton:active {
+  text-decoration: none;
+}
+
+.smallMenuItem {
+  flex-basis: 10%;
+  text-align: center;
+}
+
+.mediumMenuItem {
+  flex-basis: 15%;
+  text-align: center;
+}
+
+.menuItem {
+  flex-basis: 20%;
+  text-align: center;
+}
+
+.menuSeparator {
+  flex-basis: 20%;
+}
+
+// NetworkBadge
+.selectNetwork {
+  max-width: 130px;
+}
+
+// Settings
+.settingsTitle {
+  text-align: center;
+}
+
 // Spinner
 .loader,
 .loader:before,
@@ -23,7 +148,7 @@ a {
   animation: load7 1.8s infinite ease-in-out;
 }
 .loader {
-  color: #000000;
+  color: #0084c0;
   font-size: 10px;
   margin: 80px auto;
   position: relative;
@@ -68,3 +193,5 @@ a {
     box-shadow: 0 2.5em 0 0;
   }
 }
+
+//

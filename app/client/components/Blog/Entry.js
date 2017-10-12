@@ -4,17 +4,6 @@ import Modal from 'react-modal';
 import showdown from 'showdown';
 import DOMPurify from 'dompurify';
 
-const customStyles = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
-};
-
 class Entry extends Component {
   constructor(props) {
     super(props);
@@ -45,13 +34,12 @@ class Entry extends Component {
     const title = entry.title;
 
     return (
-      <li onClick={this.openModal} data-title={title}>
-        {this.formatDate(entry.date)} | {title}
+      <div onClick={this.openModal} className="entryTitle" data-title={title}>
+        <h5>{this.formatDate(entry.date)} | {title}</h5>
 
         <Modal
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
-          style={customStyles}
           contentLabel="Example Modal"
         >
 
@@ -59,7 +47,7 @@ class Entry extends Component {
           <div dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div>
           <button onClick={this.closeModal}>Close</button>
         </Modal>
-      </li>
+      </div>
     );
   }
 

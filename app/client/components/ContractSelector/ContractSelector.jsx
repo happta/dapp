@@ -8,15 +8,22 @@ class ContractSelector extends Component {
 
   render() {
     return (
-      <section className="contractSelector">
-        <form onSubmit={this.goToContract.bind(this)}>
-          <input type="text" id="contractInput" />
-          <button id="goToContract" onClick={this.goToContract.bind(this)}>Go to blog</button>
-        </form>
-        <form>
-          <input type="text" id="newPlatformTitle" />
-          <button disabled={!this.props.writerModeEnabled} onClick={this.createNewPublishingPlatform.bind(this)}>Create Platform</button>
-        </form>
+      <section className="contractSelector container">
+        <div className="formsContainer">
+          <form onSubmit={this.goToContract.bind(this)}>
+            <div className='contractSelectorFormContainer'>
+              <input type="text" className="Input contractInput" id="contractInput" placeholder="Address" />
+              <button id="goToContract" className="Button Button--primary" onClick={this.goToContract.bind(this)} >Go to blog</button>
+            </div>
+          </form>
+          <div className="separator"></div>
+          <form>
+            <div className='contractSelectorFormContainer'>
+              <input type="text" className="Input contractInput"  id="newPlatformTitle" placeholder="Title" />
+              <button disabled={!this.props.writerModeEnabled} onClick={this.createNewPublishingPlatform.bind(this)} className="Button Button--primary">Create Platform</button>
+            </div>
+          </form>
+        </div>
       </section>
     );
   }

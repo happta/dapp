@@ -14,7 +14,7 @@ class NetworkBadge extends Component {
   render() {
     if(this.props.selectionDisabled) {
       return (
-        <div>
+        <div className="menuButton">
           {this.props.network.name}
         </div>
       )
@@ -26,7 +26,7 @@ class NetworkBadge extends Component {
 
     return (
       <div>
-        <select onChange={this.changeNetwork.bind(this)}>
+        <select className="Select selectNetwork" onChange={this.changeNetwork.bind(this)}>
           {networkOptions}
         </select>
       </div>

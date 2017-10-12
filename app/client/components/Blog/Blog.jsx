@@ -35,9 +35,11 @@ class Blog extends Component {
     }
 
     return (
-      <div>
-        <Title contract={this.contract} />
-        <Entries contract={this.contract} />
+      <div className="container">
+        <div className="blogContainer">
+          <Title contract={this.contract} />
+          <Entries contract={this.contract} />
+        </div>
       </div>
     )
   }

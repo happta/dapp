@@ -9,22 +9,31 @@ class Header extends Component {
     const network = this.props.network;
 
     return (
-      <div>
-        <ul>
-          <li>
-            <NavLink to={`/${network.reference}`} id="goToHome">Home</NavLink>
-          </li>
-          <li>
-            <NavLink to={`/${network.reference}/settings`} id="goToSettings">Settings</NavLink>
-          </li>
-          <li>
+      <header className="header">
+        <div className="menuContainer">
+          <div className="smallMenuItem">
+            <div className="logotype">
+              happta
+            </div>
+          </div>
+          <div className="smallMenuItem">
+            <NavLink className="menuButton" to={`/${network.reference}`} id="goToHome">Home</NavLink>
+          </div>
+          <div className="smallMenuItem">
+            <NavLink className="menuButton" to={`/${network.reference}/settings`} id="goToSettings">Settings</NavLink>
+          </div>
+
+          <div className="menuSeparator"></div>
+          <div className="mediumMenuItem">
             <NetworkBadge network={network} selectionDisabled={this.props.writerModeEnabled} lightWallet={this.props.lightWallet} />
-          </li>
-          <li>
-            Publisher mode: <input type="checkbox" id="writerModeEnabled" onChange={this.props.handleWriterMode} disabled={!this.props.lightWallet.isPublisherModeAvailable()}/>
-          </li>
-        </ul>
-      </div>
+          </div>
+          <div className="mediumMenuItem">
+            <div className="menuButton">
+              Publisher mode <input type="checkbox" id="writerModeEnabled" onChange={this.props.handleWriterMode} disabled={!this.props.lightWallet.isPublisherModeAvailable()}/>
+            </div>
+          </div>
+        </div>
+      </header>
     )
   }
 }
