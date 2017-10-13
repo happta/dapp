@@ -6,8 +6,10 @@ import Header from '../Header'
 import Settings from '../Settings/Settings'
 import LightWallet from '../LightWallet'
 import Publish from '../Publish'
+import NetworkNotSupported from './NetworkNotSupported'
 
-import { Switch, Route, NavLink } from 'react-router-dom'
+import { Switch, Route } from 'react-router-dom'
+
 import css from '../../styles/flystyles.min.css'
 
 class App extends Component {
@@ -20,39 +22,41 @@ class App extends Component {
     }
 
     this.lightWallet = new LightWallet();
+    this.networkReference = this.props.match.params.network;
 
+    this.checkIfWriterModeNetworkChanged = this.checkIfWriterModeNetworkChanged.bind(this);
+    this.changeWriterNetwork = this.changeWriterNetwork.bind(this)
   }
 
   componentDidMount() {
-    setInterval(function(){
-      if(this.state.writerModeEnabled){
-        this.lightWallet.networkId(this.lightWalletClient(), function(networkId) {
-          if(this.state.writerNetworkId != networkId) {
-            this.setState({ writerNetworkId: networkId }, function(){
-              const network = this.network();
-              this.props.history.push(`/${network.reference}`)
-            });
-          }
-        }.bind(this));
-      }
-    }.bind(this), 250)
+    this.checkOftenTheWriterModeNetwork();
   }
 
   render() {
-    this.networkReference = this.props.match.params.network;
     const isAValidNetwork = this.lightWallet.isAValidNetwork(this.networkReference);
 
     if(!isAValidNetwork) {
-      return (
-        <div className="container invalidNetwork">
-          <div className="Alert Alert--danger invalidNetwork" role="alert">
-            We do not support that network. <NavLink to="/">Go to home</NavLink>.
-          </div>
-        </div>
-      )
+      return <NetworkNotSupported />
     }
 
-    const network = this.lightWallet.findNetworkByReference(this.networkReference);
+    const PublishPage = (props) => (
+      <Publish
+        {...props}
+        lightWalletClient={this.lightWalletClient()} />
+    )
+
+    const BlogPage = (props) => (
+      <Blog
+        {...props}
+        lightWalletClient={this.lightWalletClient()} />
+    )
+
+    const ContractSelectorPage = (props) => (
+      <ContractSelector
+        {...props}
+        writerModeEnabled={this.state.writerModeEnabled}
+        lightWalletClient={this.lightWalletClient()} />
+    )
 
     return (
       <div>
@@ -64,12 +68,47 @@ class App extends Component {
 
         <Switch>
           <Route path="/:network/settings" exact component={Settings} />
-          <Route path="/:network/:address/publish" render={(props) => (<Publish {...props} lightWalletClient={this.lightWalletClient()} />)} />
-          <Route path="/:network/:address" render={(props) => (<Blog {...props} lightWalletClient={this.lightWalletClient()} />)} />
-          <Route path="/:network" render={(props) => (<ContractSelector {...props} writerModeEnabled={this.state.writerModeEnabled} lightWalletClient={this.lightWalletClient()} />)} />
+          <Route path="/:network/:address/publish" render={PublishPage} />
+          <Route path="/:network/:address" render={BlogPage} />
+          <Route path="/:network" render={ContractSelectorPage} />
         </Switch>
       </div>
     )
+  }
+
+  checkOftenTheWriterModeNetwork() {
+    const fourTimesPerSecond = 250
+
+    setInterval(this.checkIfWriterModeNetworkChanged, fourTimesPerSecond)
+  }
+
+  checkIfWriterModeNetworkChanged() {
+    if(this.state.writerModeEnabled){
+      this.lightWallet.networkId(this.lightWalletClient(), this.changeWriterNetwork);
+    }
+  }
+
+  changeWriterNetwork(newNetworkId) {
+    if(this.state.writerNetworkId != newNetworkId) {
+      this.setState({ writerNetworkId: newNetworkId },
+        this.redirectToCurrentNetwork);
+    }
+  }
+
+  redirectToCurrentNetwork() {
+    const network = this.network();
+
+    this.props.history.push(`/${network.reference}`)
+  }
+
+
+  handleWriterMode(event) {
+    const activatedOrNot = event.target.checked
+
+    this.setState({
+      writerModeEnabled: activatedOrNot,
+      writerNetwork: undefined
+    })
   }
 
   network() {
@@ -86,15 +125,6 @@ class App extends Component {
     }
 
     return this.lightWallet.client(this.networkReference);
-  }
-
-  handleWriterMode(event) {
-    const activatedOrNot = event.target.checked
-
-    this.setState({
-      writerModeEnabled: activatedOrNot,
-      writerNetwork: undefined
-    })
   }
 }
 

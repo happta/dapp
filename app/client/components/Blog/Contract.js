@@ -24,52 +24,38 @@ class Contract {
   }
 
   publishPost(post, callback) {
-    const settings = new Settings();
+    const postAsBuffer = new Buffer(JSON.stringify(post))
 
-    let ipfsNode = { host: settings.host(), port: settings.port(), protocol: settings.protocol() };
+    this.uploadContent(postAsBuffer).
+      then(hash => this.registerInTheContract(hash, callback));
+  }
 
-    const ipfs = ipfsAPI(ipfsNode)
-
-    ipfs.add(new Buffer(JSON.stringify(post)), function(error, res){
-      const hash = res[0].hash;
-      this._remoteInstance().publishPost(hash, {
-        from: this.lightWalletClient.eth.accounts[0]
-      }, function(error, tx) {
+  registerInTheContract(hash, callback) {
+    this._remoteInstance().publishPost(hash, {
+      from: this.lightWalletClient.eth.accounts[0]
+    }, function(error, tx) {
+      this.waitForTransaction(tx).then(function(a) {
         callback(tx);
       });
     }.bind(this));
   }
 
-  waitForTransaction(txnHash, interval) {
-    var transactionReceiptAsync;
-    interval = interval ? interval : 500;
-    transactionReceiptAsync = function(txnHash, resolve, reject) {
-      this.lightWalletClient.eth.getTransactionReceipt(txnHash, (error, receipt) => {
-        if (error) {
-          reject(error);
-        } else {
-          if (receipt == null) {
-            setTimeout(function () {
-              transactionReceiptAsync(txnHash, resolve, reject);
-            }, interval);
-          } else {
-            resolve(receipt);
-          }
-        }
-      });
-    }.bind(this);
+  uploadContent(content) {
+    return new Promise(function(resolve, reject) {
+      this._ipfsClient().add(content, function(error, response) {
+        const hash = response[0].hash;
 
-    if (Array.isArray(txnHash)) {
-      var promises = [];
-      txnHash.forEach(function (oneTxHash) {
-        promises.push(this.lightWalletClient.eth.getTransactionReceiptMined(oneTxHash, interval));
+        resolve(hash);
       });
-      return Promise.all(promises);
-    } else {
-      return new Promise(function (resolve, reject) {
-        transactionReceiptAsync(txnHash, resolve, reject);
-      });
-    }
+    }.bind(this));
+  }
+
+  _ipfsClient() {
+    const settings = new Settings();
+
+    let ipfsNode = { host: settings.host(), port: settings.port(), protocol: settings.protocol() };
+
+    return ipfsAPI(ipfsNode);
   }
 
   loadOwner(callback) {
@@ -140,6 +126,38 @@ class Contract {
     const abi = '[{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"posts","outputs":[{"name":"content","type":"string"},{"name":"time","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_id","type":"uint256"}],"name":"getPost","outputs":[{"name":"_ipfsReference","type":"string"},{"name":"time","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"title","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_title","type":"string"}],"name":"setTitle","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"ipfsReference","type":"string"}],"name":"publishPost","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"numberOfPosts","outputs":[{"name":"_count","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"VERSION","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"inputs":[{"name":"_title","type":"string"}],"payable":false,"type":"constructor"}]'
     const contractWithAbi = this.lightWalletClient.eth.contract(JSON.parse(abi));
     return contractWithAbi.at(this.address);
+  }
+
+  waitForTransaction(txnHash, interval) {
+    var transactionReceiptAsync;
+    interval = interval ? interval : 500;
+    transactionReceiptAsync = function(txnHash, resolve, reject) {
+      this.lightWalletClient.eth.getTransactionReceipt(txnHash, (error, receipt) => {
+        if (error) {
+          reject(error);
+        } else {
+          if (receipt == null) {
+            setTimeout(function () {
+              transactionReceiptAsync(txnHash, resolve, reject);
+            }, interval);
+          } else {
+            resolve(receipt);
+          }
+        }
+      });
+    }.bind(this);
+
+    if (Array.isArray(txnHash)) {
+      var promises = [];
+      txnHash.forEach(function (oneTxHash) {
+        promises.push(this.lightWalletClient.eth.getTransactionReceiptMined(oneTxHash, interval));
+      });
+      return Promise.all(promises);
+    } else {
+      return new Promise(function (resolve, reject) {
+        transactionReceiptAsync(txnHash, resolve, reject);
+      });
+    }
   }
 }
 

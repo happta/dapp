@@ -11,25 +11,25 @@ class Publish extends Component {
 
     this.lightWalletClient = this.props.lightWalletClient;
 
+    this.publishEntry = this.publishEntry.bind(this)
     this.contract = new Contract(this.lightWalletClient, this.address);
   }
 
   render() {
-    const publishForm = (
-      <div>
-        <div className="separator"></div>
-        <label>Title:</label>
-        <input type="text" className="Input" id="newPostTitle"/>
-        <br/>
-        <label>Content (in markdown):</label>
-        <textarea className="Textarea" id="newPostContent"></textarea>
-        <br />
-        <button className="Button Button--primary marginRight-sm">Preview</button>
-        <button className="Button Button--primary" onClick={this.publishEntry.bind(this)}>Publish</button>
+    return (
+      <div className="container formsContainer">
+        <div className="FormGroup">
+          <label>Title:</label>
+          <input type="text" className="Input" id="newPostTitle"/>
+          <label>Content (in markdown):</label>
+          <textarea className="Textarea" id="newPostContent"></textarea>
+        </div>
+        <div className="FormGroup">
+          <button className="Button Button--primary marginRight-sm">Preview</button>
+          <button className="Button Button--primary" onClick={this.publishEntry}>Publish</button>
+        </div>
       </div>
     )
-
-    return (<div>{publishForm}</div>)
   }
 
   publishEntry(event) {
@@ -38,11 +38,13 @@ class Publish extends Component {
     const title = document.getElementById("newPostTitle").value;
     const content = document.getElementById("newPostContent").value;
 
-    this.contract.publishPost({title: title, content: content}, function(txHash){
-      this.contract.waitForTransaction(txHash).then(function(a) {
-        this.props.history.push(`/${this.network}/${this.address}`);
-      }.bind(this));
-    }.bind(this))
+    const post = { title: title, content: content }
+
+    this.contract.publishPost(post, this.redirectToBlog.bind(this));
+  }
+
+  redirectToBlog() {
+    this.props.history.push(`/${this.network}/${this.address}`);
   }
 }
 

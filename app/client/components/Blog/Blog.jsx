@@ -20,28 +20,20 @@ class Blog extends Component {
 
     this.state = {
       isAValidBlog: undefined,
-      isTheOwner: false
+      isTheOwner: undefined
     }
 
     this.handleBlogValidity = this.handleBlogValidity.bind(this);
+    this.checkIfIsTheOwner = this.checkIfIsTheOwner.bind(this)
   }
 
   componentDidMount() {
     this.contract.checkIfItsAValidBlog(this.handleBlogValidity);
-    this.contract.loadOwner(this.setOwner.bind(this));
-  }
-
-  setOwner(ownerAddress) {
-    const currentAddress = this.lightWalletClient.eth.accounts[0];
-    if(ownerAddress == currentAddress) {
-      this.setState({
-        isTheOwner: true
-      });
-    }
+    this.contract.loadOwner(this.checkIfIsTheOwner);
   }
 
   render() {
-    if(this.state.isAValidBlog == undefined) {
+    if(this.state.isAValidBlog == undefined || this.state.isTheOwner == undefined) {
       return <Spinner />;
     }
 
@@ -49,12 +41,17 @@ class Blog extends Component {
       return <NotFound />;
     }
 
+    const publishPostLink = (
+      this.state.isTheOwner &&
+      <NavLink to={`/${this.network}/${this.address}/publish`}>Publish Post</NavLink>
+    )
+
     return (
       <div className="container">
         <div className="blogContainer">
           <Title contract={this.contract} />
           <Entries contract={this.contract} />
-          {this.state.isTheOwner && <NavLink to={`/${this.network}/${this.address}/publish`}>Publish Post</NavLink>}
+          {publishPostLink}
         </div>
       </div>
     )
@@ -63,6 +60,14 @@ class Blog extends Component {
   handleBlogValidity(blogValidity) {
     this.setState({
       isAValidBlog: blogValidity
+    });
+  }
+
+  checkIfIsTheOwner(ownerAddress) {
+    const currentAddress = this.lightWalletClient.eth.accounts[0];
+
+    this.setState({
+      isTheOwner: ownerAddress == currentAddress
     });
   }
 }

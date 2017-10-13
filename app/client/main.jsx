@@ -1,19 +1,11 @@
 'use strict';
 
 import 'styles/main.scss';
+import 'styles/flystyles.min.css'
 
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import App from 'components/App/App';
+import AppRouter from './components/AppRouter'
 
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
-
-ReactDOM.render((
-  <BrowserRouter>
-    <Switch>
-      <Redirect from="/" exact to="/mainnet" />
-      <Route path="/:network" component={App} />
-    </Switch>
-  </BrowserRouter>
-), document.getElementById('js-main'))
+ReactDOM.render((<AppRouter />), document.getElementById('js-main'))
