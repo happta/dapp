@@ -10,7 +10,7 @@ class AppRouter extends Component {
       <BrowserRouter>
         <Switch>
           <Redirect from="/" exact to="/mainnet" />
-          <Route path="/:network" component={App} />
+          <Route path="/:network/:resource?" component={App} />
         </Switch>
       </BrowserRouter>
     )

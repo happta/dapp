@@ -21,9 +21,6 @@ class App extends Component {
       writerNetworkId: undefined
     }
 
-    this.lightWallet = new LightWallet();
-    this.networkReference = this.props.match.params.network;
-
     this.checkIfWriterModeNetworkChanged = this.checkIfWriterModeNetworkChanged.bind(this);
     this.changeWriterNetwork = this.changeWriterNetwork.bind(this)
   }
@@ -32,8 +29,12 @@ class App extends Component {
     this.checkOftenTheWriterModeNetwork();
   }
 
+  lightWallet() {
+    return new LightWallet();
+  }
+
   render() {
-    const isAValidNetwork = this.lightWallet.isAValidNetwork(this.networkReference);
+    const isAValidNetwork = this.lightWallet().isAValidNetwork(this.props.match.params.network);
 
     if(!isAValidNetwork) {
       return <NetworkNotSupported />
@@ -62,7 +63,7 @@ class App extends Component {
       <div>
         <Header
           network={this.network()}
-          lightWallet={this.lightWallet}
+          lightWallet={this.lightWallet()}
           handleWriterMode={this.handleWriterMode.bind(this)}
           writerModeEnabled={this.state.writerModeEnabled} />
 
@@ -84,7 +85,7 @@ class App extends Component {
 
   checkIfWriterModeNetworkChanged() {
     if(this.state.writerModeEnabled){
-      this.lightWallet.networkId(this.lightWalletClient(), this.changeWriterNetwork);
+      this.lightWallet().networkId(this.lightWalletClient(), this.changeWriterNetwork);
     }
   }
 
@@ -97,6 +98,11 @@ class App extends Component {
 
   redirectToCurrentNetwork() {
     const network = this.network();
+    const resource = this.props.match.params.resource
+
+    if(resource) {
+      return this.props.history.push(`/${network.reference}/${resource}`)
+    }
 
     this.props.history.push(`/${network.reference}`)
   }
@@ -113,18 +119,18 @@ class App extends Component {
 
   network() {
     if(this.state.writerModeEnabled){
-      return this.lightWallet.findNetworkByIdWithFallback(this.state.writerNetworkId);
+      return this.lightWallet().findNetworkByIdWithFallback(this.state.writerNetworkId);
     }
 
-    return this.lightWallet.findNetworkByReference(this.networkReference);
+    return this.lightWallet().findNetworkByReference(this.props.match.params.network);
   }
 
   lightWalletClient() {
     if(this.state.writerModeEnabled){
-      return this.lightWallet.publisherClient();
+      return this.lightWallet().publisherClient();
     }
 
-    return this.lightWallet.client(this.networkReference);
+    return this.lightWallet().client(this.props.match.params.network);
   }
 }
 

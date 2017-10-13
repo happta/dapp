@@ -5,6 +5,22 @@ import { NavLink } from 'react-router-dom'
 import NetworkBadge from './App/NetworkBadge'
 
 class Header extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      writerModeAvailable: undefined
+    }
+  }
+
+  componentDidMount() {
+    setTimeout(function() {
+      this.setState({
+        writerModeAvailable: this.props.lightWallet.isPublisherModeAvailable()
+      })
+    }.bind(this), 1000)
+  }
+
   render() {
     const network = this.props.network;
 
@@ -29,7 +45,7 @@ class Header extends Component {
           </div>
           <div className="mediumMenuItem">
             <div className="menuButton">
-              Publisher mode <input type="checkbox" id="writerModeEnabled" onChange={this.props.handleWriterMode} disabled={!this.props.lightWallet.isPublisherModeAvailable()}/>
+              Publisher mode <input type="checkbox" id="writerModeEnabled" onChange={this.props.handleWriterMode} disabled={!this.state.writerModeAvailable}/>
             </div>
           </div>
         </div>

@@ -11,13 +11,6 @@ class Blog extends Component {
   constructor(props) {
     super(props);
 
-    this.network = this.props.match.params.network;
-    this.address = this.props.match.params.address;
-
-    this.lightWalletClient = this.props.lightWalletClient;
-
-    this.contract = new Contract(this.lightWalletClient, this.address);
-
     this.state = {
       isAValidBlog: undefined,
       isTheOwner: undefined
@@ -28,12 +21,21 @@ class Blog extends Component {
   }
 
   componentDidMount() {
-    this.contract.checkIfItsAValidBlog(this.handleBlogValidity);
-    this.contract.loadOwner(this.checkIfIsTheOwner);
+    const contract = new Contract(this.props.lightWalletClient, this.props.match.params.address);
+
+    contract.checkIfItsAValidBlog(this.handleBlogValidity);
+    contract.loadOwner(this.checkIfIsTheOwner);
+  }
+
+  componentWillReceiveProps(newProps) {
+    const contract = new Contract(newProps.lightWalletClient, newProps.match.params.address);
+
+    contract.checkIfItsAValidBlog(this.handleBlogValidity);
+    contract.loadOwner(this.checkIfIsTheOwner);
   }
 
   render() {
-    if(this.state.isAValidBlog == undefined || this.state.isTheOwner == undefined) {
+    if(this.state.isAValidBlog == undefined) {
       return <Spinner />;
     }
 
@@ -43,14 +45,14 @@ class Blog extends Component {
 
     const publishPostLink = (
       this.state.isTheOwner &&
-      <NavLink to={`/${this.network}/${this.address}/publish`}>Publish Post</NavLink>
+      <NavLink to={`/${this.props.match.params.network}/${this.props.match.params.address}/publish`}>Publish Post</NavLink>
     )
 
     return (
       <div className="container">
         <div className="blogContainer">
-          <Title contract={this.contract} />
-          <Entries contract={this.contract} />
+          <Title contract={this.contract()} />
+          <Entries contract={this.contract()} />
           {publishPostLink}
         </div>
       </div>
@@ -63,8 +65,12 @@ class Blog extends Component {
     });
   }
 
+  contract() {
+    return new Contract(this.props.lightWalletClient, this.props.match.params.address)
+  }
+
   checkIfIsTheOwner(ownerAddress) {
-    const currentAddress = this.lightWalletClient.eth.accounts[0];
+    const currentAddress = this.props.lightWalletClient.eth.accounts[0];
 
     this.setState({
       isTheOwner: ownerAddress == currentAddress

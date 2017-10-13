@@ -12,8 +12,6 @@ class Entries extends Component {
       postsCount: -1
     }
 
-    this.contract = this.props.contract;
-
     this.handlePostCount = this.handlePostCount.bind(this)
     this.handlePostLoad = this.handlePostLoad.bind(this)
   }
@@ -22,9 +20,33 @@ class Entries extends Component {
     this.fetchPosts()
   }
 
+  render() {
+    if(this.state.postsLoading) {
+      return <Spinner />;
+    }
+
+    if(this.state.posts.length == 0) {
+      return (
+        <div className="Alert Alert--info" role="alert">
+          There are no posts yet
+        </div>
+      )
+    }
+
+    const entries = this.state.posts.map(function(post) {
+      return <Entry entry={post} key={`${post.identifier}${post.date}`} />
+    }.bind(this));
+
+    return (
+      <ul>
+        {entries}
+      </ul>
+    );
+  }
+
   fetchPosts() {
-    this.contract.countPosts(this.handlePostCount)
-    this.contract.loadPosts(this.handlePostLoad)
+    this.props.contract.countPosts(this.handlePostCount)
+    this.props.contract.loadPosts(this.handlePostLoad)
   }
 
   handlePostLoad(post) {
@@ -46,31 +68,6 @@ class Entries extends Component {
     this.setState({
       postsCount: count
     }, this.checkIfAllPostsAreLoaded)
-  }
-
-  render() {
-    if(this.state.postsLoading) {
-      return <Spinner />;
-    }
-
-    if(this.state.posts.length == 0) {
-      return (
-        <div className="Alert Alert--info" role="alert">
-          There are no posts yet
-        </div>
-
-      )
-    }
-
-    const entries = this.state.posts.map(function(post) {
-      return <Entry entry={post} key={`${post.identifier}${post.date}`} />
-    }.bind(this));
-
-    return (
-      <ul>
-        {entries}
-      </ul>
-    );
   }
 }
 

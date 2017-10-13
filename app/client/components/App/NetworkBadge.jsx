@@ -5,10 +5,6 @@ import { withRouter } from 'react-router';
 class NetworkBadge extends Component {
   constructor(props) {
     super(props);
-
-    const lightWallet = this.props.lightWallet;
-
-    this.networks = lightWallet.networks();
   }
 
   render() {
@@ -20,7 +16,7 @@ class NetworkBadge extends Component {
       )
     }
 
-    const networkOptions = this.networks.map(function(network){
+    const networkOptions = this.props.lightWallet.networks().map(function(network){
       return <option key={network.reference} selected={this.props.network.reference == network.reference}>{network.name}</option>
     }.bind(this));
 
@@ -35,7 +31,14 @@ class NetworkBadge extends Component {
 
   changeNetwork(event) {
     const selectedOption = event.target.selectedIndex
-    const selectedNetwork = this.networks[selectedOption];
+    const selectedNetwork = this.props.lightWallet.networks()[selectedOption];
+
+    const resource = this.props.match.params.resource;
+
+    if(resource) {
+      this.props.history.push(`/${selectedNetwork.reference}/${resource}`)
+      return
+    }
 
     this.props.history.push(`/${selectedNetwork.reference}`)
   }
