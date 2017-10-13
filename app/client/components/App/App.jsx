@@ -5,6 +5,7 @@ import Blog from '../Blog/Blog'
 import Header from '../Header'
 import Settings from '../Settings/Settings'
 import LightWallet from '../LightWallet'
+import Publish from '../Publish'
 
 import { Switch, Route, NavLink } from 'react-router-dom'
 import css from '../../styles/flystyles.min.css'
@@ -19,6 +20,7 @@ class App extends Component {
     }
 
     this.lightWallet = new LightWallet();
+
   }
 
   componentDidMount() {
@@ -62,6 +64,7 @@ class App extends Component {
 
         <Switch>
           <Route path="/:network/settings" exact component={Settings} />
+          <Route path="/:network/:address/publish" render={(props) => (<Publish {...props} lightWalletClient={this.lightWalletClient()} />)} />
           <Route path="/:network/:address" render={(props) => (<Blog {...props} lightWalletClient={this.lightWalletClient()} />)} />
           <Route path="/:network" render={(props) => (<ContractSelector {...props} writerModeEnabled={this.state.writerModeEnabled} lightWalletClient={this.lightWalletClient()} />)} />
         </Switch>

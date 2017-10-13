@@ -1,5 +1,8 @@
-import ipfs from 'ipfs-js'
 import Settings from '../Settings/Settings'
+
+import ipfsAPI from 'ipfs-api'
+
+window.Buffer = Buffer;
 
 class Contract {
   constructor(lightWalletClient, address) {
@@ -17,6 +20,61 @@ class Contract {
     this._remoteInstance().numberOfPosts.call(function(error, numberOfPosts){
       let count = parseInt(numberOfPosts);
       callback(count);
+    });
+  }
+
+  publishPost(post, callback) {
+    const settings = new Settings();
+
+    let ipfsNode = { host: settings.host(), port: settings.port(), protocol: settings.protocol() };
+
+    const ipfs = ipfsAPI(ipfsNode)
+
+    ipfs.add(new Buffer(JSON.stringify(post)), function(error, res){
+      const hash = res[0].hash;
+      this._remoteInstance().publishPost(hash, {
+        from: this.lightWalletClient.eth.accounts[0]
+      }, function(error, tx) {
+        callback(tx);
+      });
+    }.bind(this));
+  }
+
+  waitForTransaction(txnHash, interval) {
+    var transactionReceiptAsync;
+    interval = interval ? interval : 500;
+    transactionReceiptAsync = function(txnHash, resolve, reject) {
+      this.lightWalletClient.eth.getTransactionReceipt(txnHash, (error, receipt) => {
+        if (error) {
+          reject(error);
+        } else {
+          if (receipt == null) {
+            setTimeout(function () {
+              transactionReceiptAsync(txnHash, resolve, reject);
+            }, interval);
+          } else {
+            resolve(receipt);
+          }
+        }
+      });
+    }.bind(this);
+
+    if (Array.isArray(txnHash)) {
+      var promises = [];
+      txnHash.forEach(function (oneTxHash) {
+        promises.push(this.lightWalletClient.eth.getTransactionReceiptMined(oneTxHash, interval));
+      });
+      return Promise.all(promises);
+    } else {
+      return new Promise(function (resolve, reject) {
+        transactionReceiptAsync(txnHash, resolve, reject);
+      });
+    }
+  }
+
+  loadOwner(callback) {
+    this._remoteInstance().owner.call(function(error, ownerAddress){
+      callback(ownerAddress);
     });
   }
 
@@ -43,21 +101,19 @@ class Contract {
       const settings = new Settings();
 
       let ipfsNode = { host: settings.host(), port: settings.port(), protocol: settings.protocol() };
+      const ipfs = ipfsAPI(ipfsNode)
 
-      ipfs.setProvider(ipfsNode);
+      ipfs.cat(post.identifier, {buffer: true}, function (err, res) {
+        const rawContent = new Buffer(res).toString();
+        const structuredContent = JSON.parse(rawContent)
 
-      ipfs.cat(post.identifier, function(error, buffer) {
-        const rawContent = buffer.toString();
-        const content = JSON.parse(rawContent);
-
-        post.title = content.title
-        post.content = content.content
+        post.title = structuredContent.title;
+        post.content = structuredContent.content;
 
         callback(post);
       });
     });
   }
-
 
   checkIfItsAValidBlog(callback) {
     const supportedVersions = [

@@ -57,5 +57,10 @@ module.exports = {
     ],
 
     noParse: /\.min\.js/
+  },
+  node: {
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
   }
 };

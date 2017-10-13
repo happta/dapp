@@ -19,6 +19,10 @@ class Entries extends Component {
   }
 
   componentDidMount() {
+    this.fetchPosts()
+  }
+
+  fetchPosts() {
     this.contract.countPosts(this.handlePostCount)
     this.contract.loadPosts(this.handlePostLoad)
   }

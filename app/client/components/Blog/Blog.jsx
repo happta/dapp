@@ -5,17 +5,22 @@ import Entries from './Entries'
 import Spinner from './Spinner'
 import Title from './Title'
 
+import { NavLink } from 'react-router-dom'
+
 class Blog extends Component {
   constructor(props) {
     super(props);
 
-    const address = this.props.match.params.address;
-    const lightWalletClient = this.props.lightWalletClient;
+    this.network = this.props.match.params.network;
+    this.address = this.props.match.params.address;
 
-    this.contract = new Contract(lightWalletClient, address);
+    this.lightWalletClient = this.props.lightWalletClient;
+
+    this.contract = new Contract(this.lightWalletClient, this.address);
 
     this.state = {
-      isAValidBlog: undefined
+      isAValidBlog: undefined,
+      isTheOwner: false
     }
 
     this.handleBlogValidity = this.handleBlogValidity.bind(this);
@@ -23,6 +28,16 @@ class Blog extends Component {
 
   componentDidMount() {
     this.contract.checkIfItsAValidBlog(this.handleBlogValidity);
+    this.contract.loadOwner(this.setOwner.bind(this));
+  }
+
+  setOwner(ownerAddress) {
+    const currentAddress = this.lightWalletClient.eth.accounts[0];
+    if(ownerAddress == currentAddress) {
+      this.setState({
+        isTheOwner: true
+      });
+    }
   }
 
   render() {
@@ -39,13 +54,10 @@ class Blog extends Component {
         <div className="blogContainer">
           <Title contract={this.contract} />
           <Entries contract={this.contract} />
+          {this.state.isTheOwner && <NavLink to={`/${this.network}/${this.address}/publish`}>Publish Post</NavLink>}
         </div>
       </div>
     )
-  }
-
-  goToContractSelector() {
-    this.props.history.push('/');
   }
 
   handleBlogValidity(blogValidity) {
