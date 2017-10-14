@@ -9,7 +9,7 @@ class Settings extends Component {
     this.protocolReference = "protocolNode";
 
     this.defaultNodeHost = "ipfs"
-    this.defaultNodePort = "5001"
+    this.defaultNodePort = "5002"
     this.defaultNodeProtocol = "http"
 
     this.changeHost = this.changeHost.bind(this);

@@ -41,11 +41,29 @@ class Contract {
   }
 
   uploadContent(content) {
-    return new Promise(function(resolve, reject) {
-      this._ipfsClient().add(content, function(error, response) {
-        const hash = response[0].hash;
+    const settings = new Settings();
 
-        resolve(hash);
+    const publishUrl = `${settings.protocol()}://${settings.host()}:${settings.port()}/ipfs/`
+
+    return new Promise(function(resolve, reject) {
+      fetch(publishUrl, {
+        method: 'POST',
+        body: content,
+        mode: 'cors'
+      }).then(function(response){
+        var hash = ''
+
+        for (var pair of response.headers.entries()) {
+          if(pair[0] == 'ipfs-hash') {
+            hash = pair[1]
+          }
+        }
+
+        if(hash != '' && hash != undefined) {
+          resolve(hash);
+        } else {
+          throw 'Upload to IPFS failure'
+        }
       });
     }.bind(this));
   }

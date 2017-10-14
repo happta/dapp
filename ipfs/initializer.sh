@@ -19,9 +19,13 @@ fi
 
 ipfs init
 ipfs config Addresses.API /ip4/0.0.0.0/tcp/5001
-ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/8080
+ipfs config Addresses.Gateway /ip4/0.0.0.0/tcp/5002
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
 ipfs config --json API.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST"]'
+ipfs config --json Gateway.HTTPHeaders.Access-Control-Allow-Origin '["*"]'
+ipfs config --json Gateway.HTTPHeaders.Access-Control-Allow-Methods '["PUT", "GET", "POST"]'
+ipfs config --json Gateway.Writable true
+ipfs config --json Gateway.HTTPHeaders.Access-Control-Expose-Headers '["Ipfs-Hash"]'
 
 # if the first argument is daemon
 if [ "$1" = "daemon" ]; then

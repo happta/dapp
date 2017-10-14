@@ -25,7 +25,7 @@ module.exports = {
   },
 
   DEFAULT_HOST_NAME: "ipfs",
-  DEFAULT_PORT: "5001",
+  DEFAULT_PORT: "5002",
   DEFAULT_PROTOCOL: "http",
 
   'Can reset values to default': function(browser) {
