@@ -118,7 +118,7 @@ class App extends Component {
   }
 
   network() {
-    if(this.state.writerModeEnabled){
+    if(this.state.writerModeEnabled && this.state.writerNetworkId != undefined){
       return this.lightWallet().findNetworkByIdWithFallback(this.state.writerNetworkId);
     }
 
