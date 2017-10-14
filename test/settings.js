@@ -24,8 +24,8 @@ module.exports = {
     browser.end();
   },
 
-  DEFAULT_HOST_NAME: "ipfs",
-  DEFAULT_PORT: "5002",
+  DEFAULT_HOST_NAME: "50.112.194.81",
+  DEFAULT_PORT: "8080",
   DEFAULT_PROTOCOL: "http",
 
   'Can reset values to default': function(browser) {

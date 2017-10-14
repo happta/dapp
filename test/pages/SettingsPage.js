@@ -22,6 +22,15 @@ class SettingsPage {
 
     return (new HomePage(this.browser, false))
   }
+
+  setupTestConfig() {
+    this.browser.url(this.url);
+    this.browser.clearValue("#hostField");
+    this.browser.setValue("#hostField", "ipfs");
+
+    this.browser.clearValue("#portField");
+    this.browser.setValue("#portField", "5002");
+  }
 }
 
 module.exports = SettingsPage;

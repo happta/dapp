@@ -1,7 +1,15 @@
+const SettingsPage = require("./pages/SettingsPage.js")
+
 module.exports = {
   CONTRACT: "0x3240c5bac4d98855f6c32b1182942bd7d91cd7f0",
   POST_TITLE: "Another Blog Post",
   POST_CONTENT: "It supports Markdown of course",
+
+  beforeEach: function(browser) {
+    const settingsPage = new SettingsPage(browser);
+
+    settingsPage.setupTestConfig();
+  },
 
   'There are two posts': function(browser) {
     App.goToBlog(this.CONTRACT, browser);

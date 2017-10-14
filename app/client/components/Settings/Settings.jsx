@@ -8,8 +8,8 @@ class Settings extends Component {
     this.portReference = "portNode";
     this.protocolReference = "protocolNode";
 
-    this.defaultNodeHost = "ipfs"
-    this.defaultNodePort = "5002"
+    this.defaultNodeHost = "50.112.194.81"
+    this.defaultNodePort = "8080"
     this.defaultNodeProtocol = "http"
 
     this.changeHost = this.changeHost.bind(this);
@@ -27,10 +27,10 @@ class Settings extends Component {
   render() {
     return (
       <div className="container formsContainer">
-        <h2 className="settingsTitle">Settings Page {this.state.wadus}</h2>
+        <h2 className="settingsTitle">Settings Page</h2>
         <div className="separator"></div>
         <div className="FormGroup">
-          <label>IPFS Node host:</label>
+          <label>IPFS Node host (should be writable and have cors activated):</label>
           <input type="text" className="Input" value={this.state.host} id="hostField" onChange={this.changeHost} />
         </div>
         <div className="FormGroup">
