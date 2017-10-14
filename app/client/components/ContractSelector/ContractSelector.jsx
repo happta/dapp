@@ -1,12 +1,26 @@
 import React, { Component } from 'react';
 import Blog from '../../Blog.sol'
+import Spinner from '../Blog/Spinner'
 
 class ContractSelector extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      publishingContract: false
+    }
   }
 
   render() {
+    const publishContractForm = (
+      <form>
+        <div className='contractSelectorFormContainer'>
+          <input type="text" className="Input contractInput"  id="newPlatformTitle" placeholder="Title" />
+          <button disabled={!this.props.writerModeEnabled} onClick={this.createNewPublishingPlatform.bind(this)} className="Button Button--primary">Create Platform</button>
+        </div>
+      </form>
+    )
+
     return (
       <section className="contractSelector container">
         <div className="formsContainer">
@@ -17,12 +31,8 @@ class ContractSelector extends Component {
             </div>
           </form>
           <div className="separator"></div>
-          <form>
-            <div className='contractSelectorFormContainer'>
-              <input type="text" className="Input contractInput"  id="newPlatformTitle" placeholder="Title" />
-              <button disabled={!this.props.writerModeEnabled} onClick={this.createNewPublishingPlatform.bind(this)} className="Button Button--primary">Create Platform</button>
-            </div>
-          </form>
+          {!this.state.publishingContract && publishContractForm}
+          {this.state.publishingContract && <Spinner />}
         </div>
       </section>
     );
@@ -39,6 +49,11 @@ class ContractSelector extends Component {
 
   createNewPublishingPlatform(event) {
     event.preventDefault();
+
+    this.setState({
+      publishingContract: true
+    });
+
     const compiledContract = Blog['Blog.sol:Blog']
     const contract = this.props.lightWalletClient.eth.contract(compiledContract.abi);
 
@@ -48,12 +63,15 @@ class ContractSelector extends Component {
       {
         from: this.props.lightWalletClient.eth.accounts[0],
         data: compiledContract.bytecode
-      }, function (e, contract){
-        if(contract != undefined && contract.transactionHash) {
-          this.waitForTransaction(contract.transactionHash).then(function(deployedContract) {
+      }, function (e, tentativeContract){
+        if(tentativeContract!= undefined && tentativeContract.transactionHash) {
+          this.waitForTransaction(tentativeContract.transactionHash).then(function(deployedContract) {
             const network = this.props.match.params.network;
             const route = `/${network}/${deployedContract.contractAddress}`;
 
+            this.setState({
+              publishingContract: false
+            });
             this.props.history.push(route);
           }.bind(this));
         }

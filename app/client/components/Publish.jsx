@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 
 import Contract from './Blog/Contract';
+import Spinner from './Blog/Spinner';
 
 class Publish extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      publishingPost: false
+    }
 
     this.network = this.props.match.params.network;
     this.address = this.props.match.params.address;
@@ -16,6 +21,10 @@ class Publish extends Component {
   }
 
   render() {
+    if(this.state.publishingPost) {
+      return <Spinner />
+    }
+
     return (
       <div className="container formsContainer">
         <div className="FormGroup">
@@ -35,6 +44,10 @@ class Publish extends Component {
   publishEntry(event) {
     event.preventDefault();
 
+    this.setState({
+      publishingPost: true
+    })
+
     const title = document.getElementById("newPostTitle").value;
     const content = document.getElementById("newPostContent").value;
 
@@ -44,6 +57,10 @@ class Publish extends Component {
   }
 
   redirectToBlog() {
+    this.setState({
+      publishingPost: false
+    })
+
     this.props.history.push(`/${this.network}/${this.address}`);
   }
 }
