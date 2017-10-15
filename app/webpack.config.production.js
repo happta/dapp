@@ -35,7 +35,7 @@ config.plugins = config.plugins.concat([
   }),
   new webpack.DefinePlugin({
     'process.env': {
-      NODE_ENV: JSON.stringify('production')
+      PRODUCTION: JSON.stringify(true)
     }
   })
 ]);
