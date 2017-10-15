@@ -45,7 +45,11 @@ class Blog extends Component {
 
     const publishPostLink = (
       this.state.isTheOwner &&
-      <NavLink to={`/${this.props.match.params.network}/${this.props.match.params.address}/publish`}>Publish Post</NavLink>
+      <div>
+        <div className="separator"></div>
+        <button className="Button Button--primary Button--block" onClick={this.goToPublishPage.bind(this)}>Publish</button>
+      </div>
+
     )
 
     return (
@@ -57,6 +61,12 @@ class Blog extends Component {
         </div>
       </div>
     )
+  }
+
+  goToPublishPage() {
+    const route = `/${this.props.match.params.network}/${this.props.match.params.address}/publish`
+
+    this.props.history.push(route)
   }
 
   handleBlogValidity(blogValidity) {

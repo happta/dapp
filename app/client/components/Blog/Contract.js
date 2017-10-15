@@ -83,7 +83,7 @@ class Contract {
           callback(ownerAddress);
         });
       }
-    });
+    }.bind(this));
   }
 
   loadPosts(callback) {

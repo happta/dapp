@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import SimpleMDE from 'simplemde'
+import 'simplemde/dist/simplemde.min.css';
 
 import Contract from './Blog/Contract';
 import Spinner from './Blog/Spinner';
@@ -18,6 +20,13 @@ class Publish extends Component {
 
     this.publishEntry = this.publishEntry.bind(this)
     this.contract = new Contract(this.lightWalletClient, this.address);
+  }
+
+  componentDidMount() {
+    this.editor = new SimpleMDE({
+      element: document.getElementById("newPostContent"),
+      spellChecker: false
+    });
   }
 
   render() {
@@ -49,7 +58,7 @@ class Publish extends Component {
     })
 
     const title = document.getElementById("newPostTitle").value;
-    const content = document.getElementById("newPostContent").value;
+    const content = this.editor.value();
 
     const post = { title: title, content: content }
 
