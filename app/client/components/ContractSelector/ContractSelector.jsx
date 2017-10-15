@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Blog from '../../Blog.sol'
 import Spinner from '../Blog/Spinner'
+import TransactionsHistory from '../TransactionsHistory'
 
 class ContractSelector extends Component {
   constructor(props) {
@@ -50,6 +51,9 @@ class ContractSelector extends Component {
   createNewPublishingPlatform(event) {
     event.preventDefault();
 
+    const transactionsHistory = new TransactionsHistory(this.props.match.params.network);
+
+
     this.setState({
       publishingContract: true
     });
@@ -64,6 +68,14 @@ class ContractSelector extends Component {
         from: this.props.lightWalletClient.eth.accounts[0],
         data: compiledContract.bytecode
       }, function (e, tentativeContract){
+        transactionsHistory.registerNewTransaction(
+          tentativeContract.transactionHash,
+          'Create new publishing platform',
+          {
+            'Platform title': title
+          }
+        )
+
         if(tentativeContract!= undefined && tentativeContract.transactionHash) {
           this.waitForTransaction(tentativeContract.transactionHash).then(function(deployedContract) {
             const network = this.props.match.params.network;
@@ -72,6 +84,9 @@ class ContractSelector extends Component {
             this.setState({
               publishingContract: false
             });
+
+            transactionsHistory.markTransactionAsProcessed(tentativeContract.transactionHash);
+
             this.props.history.push(route);
           }.bind(this));
         }

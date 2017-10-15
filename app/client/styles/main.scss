@@ -21,6 +21,12 @@ a {
   padding-top: 40px;
 }
 
+.staticContainer {
+  width: 80%;
+  margin: 0 auto;
+  padding-top: 40px;
+}
+
 .formsContainer {
   width: 60%;
   margin: 0 auto;
@@ -194,4 +200,71 @@ a {
   }
 }
 
-//
+// Tooltip
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltipText {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px;
+
+/* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+// Transactions table
+
+.transactionsTable {
+  width: 100%;
+  border: 1px solid black;
+  margin: 0 auto;
+}
+
+.transactionsTable tr {
+  border: 1px solid black
+}
+
+.transactionsTable thead {
+  font-weight: 600;
+}
+
+.transactionsTable td {
+  border: 1px solid black;
+  padding: 10px 5px;
+}
+
+.transactionsTable .date {
+  width: 17.5%;
+}
+
+.transactionsTable tbody .date {
+  font-size: 12px;
+}
+
+.transactionsTable .transactionHash{
+  width: 12.5%;
+}
+
+.transactionsTable .params {
+  width: 35%;
+}
+
+.transactionsTable .description{
+  width: 25%;
+}
+
+.transactionsTable .status {
+  width: 12.5%;
+}

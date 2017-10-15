@@ -4,16 +4,16 @@ import ContractSelector from '../ContractSelector/ContractSelector'
 import Blog from '../Blog/Blog'
 import Header from '../Header'
 import Settings from '../Settings/Settings'
+import Transactions from '../Transactions'
 import LightWallet from '../LightWallet'
 import Publish from '../Publish'
 import NetworkNotSupported from './NetworkNotSupported'
 
+import TransactionsHistory from '../TransactionsHistory'
+
 import { Switch, Route } from 'react-router-dom'
 
 import css from '../../styles/flystyles.min.css'
-
-import PropTypes from 'prop-types'
-
 
 class App extends Component {
   constructor(props) {
@@ -30,6 +30,7 @@ class App extends Component {
 
   componentDidMount() {
     this.checkOftenTheWriterModeNetwork();
+    this.checkPendingTransactionsOften();
   }
 
   lightWallet() {
@@ -72,6 +73,7 @@ class App extends Component {
 
         <Switch>
           <Route path="/:network/settings" exact component={Settings} />
+          <Route path="/:network/transactions" exact component={Transactions} />
           <Route path="/:network/:address/publish" render={PublishPage} />
           <Route path="/:network/:address" render={BlogPage} />
           <Route path="/:network" render={ContractSelectorPage} />
@@ -134,6 +136,14 @@ class App extends Component {
     }
 
     return this.lightWallet().client(this.props.match.params.network);
+  }
+
+  checkPendingTransactionsOften() {
+    const transactionsHistory = new TransactionsHistory(this.props.match.params.network);
+
+    setInterval(function(){
+      transactionsHistory.checkPendingTransactions()
+    }, 500);
   }
 }
 

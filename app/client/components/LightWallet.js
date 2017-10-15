@@ -17,9 +17,14 @@ class LightWallet {
 
   isPublisherModeAvailable() {
     const isInstalled = typeof web3 != "undefined"
+
+    if(!isInstalled) {
+      return false
+    }
+
     const isUnlocked = this.publisherClient().eth.accounts.length > 0
 
-    return (isInstalled && isUnlocked)
+    return isUnlocked;
   }
 
   isAValidNetwork(networkReference) {
