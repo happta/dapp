@@ -77,8 +77,12 @@ class Contract {
   }
 
   loadOwner(callback) {
-    this._remoteInstance().owner.call(function(error, ownerAddress){
-      callback(ownerAddress);
+    this.checkIfItsAValidBlog(function(valid) {
+      if(valid) {
+        this._remoteInstance().owner.call(function(error, ownerAddress){
+          callback(ownerAddress);
+        });
+      }
     });
   }
 
