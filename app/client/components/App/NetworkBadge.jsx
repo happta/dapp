@@ -17,12 +17,12 @@ class NetworkBadge extends Component {
     }
 
     const networkOptions = this.props.lightWallet.networks().map(function(network){
-      return <option key={network.reference} selected={this.props.network.reference == network.reference}>{network.name}</option>
+      return <option key={network.reference}>{network.name}</option>
     }.bind(this));
 
     return (
       <div>
-        <select className="Select selectNetwork" onChange={this.changeNetwork.bind(this)}>
+        <select className="Select selectNetwork" onChange={this.changeNetwork.bind(this)} defaultValue={this.props.network.name}>
           {networkOptions}
         </select>
       </div>

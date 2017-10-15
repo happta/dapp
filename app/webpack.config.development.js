@@ -6,7 +6,6 @@ var config = require('./webpack.config.base.js');
 if (process.env.NODE_ENV !== 'test') {
   config.entry = [
     'webpack-dev-server/client?http://app:3000',
-    'webpack/hot/dev-server'
   ].concat(config.entry);
 }
 
@@ -17,7 +16,7 @@ config.plugins = config.plugins.concat([
 ]);
 
 config.module.loaders = config.module.loaders.concat([
-  {test: /\.jsx?$/, loaders: [ 'react-hot', 'babel'], exclude: /node_modules/}
+  {test: /\.jsx?$/, loaders: [ 'babel'], exclude: /node_modules/}
 ]);
 
 module.exports = config;
