@@ -13,8 +13,6 @@ import TransactionsHistory from '../TransactionsHistory'
 
 import { Switch, Route } from 'react-router-dom'
 
-import css from '../../styles/flystyles.min.css'
-
 class App extends Component {
   constructor(props) {
     super(props);

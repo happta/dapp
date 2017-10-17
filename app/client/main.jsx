@@ -1,7 +1,6 @@
 'use strict';
 
 import 'styles/main.scss';
-import 'styles/flystyles.min.css'
 
 import React from 'react';
 import ReactDOM from 'react-dom';
