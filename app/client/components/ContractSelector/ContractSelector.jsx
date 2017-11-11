@@ -60,7 +60,7 @@ class ContractSelector extends Component {
                   <h4 className="card-title">Personal</h4>
                   <p className="card-text">It can substitute traditional publishing platforms.</p>
 
-                  <button className="btn btn-primary cursor">See it in action</button>
+                  <a href="http://dapp.happta.com/mainnet/0xd2bD5721D07476adA56BDc44B3FBAfC6Ec8F41ce" className="btn btn-primary cursor">See it in action</a>
                 </div>
               </div>
             </div>
