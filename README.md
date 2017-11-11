@@ -1,4 +1,4 @@
-![Build Status](https://api.travis-ci.org/MiguelBel/DecentralizedBlog.svg?branch=travis-ci-integration)
+![Build Status](https://api.travis-ci.org/happta/dapp.svg?branch=travis-ci-integration)
 
 # Decentralized Blog
 
