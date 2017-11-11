@@ -8,7 +8,7 @@ class Settings extends Component {
     this.portReference = "portNode";
     this.protocolReference = "protocolNode";
 
-    this.defaultNodeHost = "50.112.194.81"
+    this.defaultNodeHost = "5.196.89.46"
     this.defaultNodePort = "8080"
     this.defaultNodeProtocol = "http"
 
