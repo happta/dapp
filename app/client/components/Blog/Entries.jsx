@@ -27,7 +27,7 @@ class Entries extends Component {
 
     if(this.state.posts.length == 0) {
       return (
-        <div className="Alert Alert--info" role="alert">
+        <div className="alert alert-info" role="alert">
           There are no posts yet
         </div>
       )
@@ -37,11 +37,7 @@ class Entries extends Component {
       return <Entry entry={post} key={`${post.identifier}${post.date}`} />
     }.bind(this));
 
-    return (
-      <ul>
-        {entries}
-      </ul>
-    );
+    return entries;
   }
 
   fetchPosts() {

@@ -14,38 +14,70 @@ class ContractSelector extends Component {
 
   render() {
     const publishContractForm = (
-      <form>
-        <div className='contractSelectorFormContainer'>
-          <input type="text" className="Input contractInput"  id="newPlatformTitle" placeholder="Title" />
-          <button disabled={!this.props.writerModeEnabled} onClick={this.createNewPublishingPlatform.bind(this)} className="Button Button--primary">Create Platform</button>
+      <div className="contractSelectorFormContainer row grid-margin card">
+        <div className="card-body">
+          <form className="form-inline row">
+            <input type="text" className="form-control p-input col-9" id="newPlatformTitle" placeholder="Title" />
+            <div className="col-3">
+              <button disabled={!this.props.writerModeEnabled} className="btn btn-primary" onClick={this.createNewPublishingPlatform.bind(this)}>Create Platform</button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     )
 
     return (
-      <section className="contractSelector container">
-        <div className="formsContainer">
-          <form onSubmit={this.goToContract.bind(this)}>
-            <div className='contractSelectorFormContainer'>
-              <input type="text" className="Input contractInput" id="contractInput" placeholder="Address" />
-              <button id="goToContract" className="Button Button--primary" onClick={this.goToContract.bind(this)} >Go to blog</button>
+      <section className="container page-body-wrapper">
+        <div className="content-wrapper full-page-wrapper">
+          <div className="row grid-margin">
+            <div className="col-1"></div>
+            <div className="col-10">
+              <div></div>
+              {!this.state.publishingContract && publishContractForm}
+              {this.state.publishingContract && <Spinner />}
             </div>
-          </form>
-          <div className="separator"></div>
-          {!this.state.publishingContract && publishContractForm}
-          {this.state.publishingContract && <Spinner />}
+            <div className="col-1"></div>
+          </div>
+
+          <h1 className="page-title">Use cases</h1>
+
+          <div className="row grid-margin">
+            <div className="col-4">
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Project updates</h4>
+                  <p className="card-text">
+                    We use the project to release the project updates.
+                  </p>
+
+                  <button className="btn btn-primary cursor">See it in action</button>
+                </div>
+              </div>
+            </div>
+            <div className="col-4">
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Personal</h4>
+                  <p className="card-text">It can substitute traditional publishing platforms.</p>
+
+                  <button className="btn btn-primary cursor">See it in action</button>
+                </div>
+              </div>
+            </div>
+            <div className="col-4">
+              <div className="card">
+                <div className="card-body">
+                  <h4 className="card-title">Corporate announcements</h4>
+                  <p className="card-text">DAOs can issue their official statements in a reliable way.</p>
+
+                  <a href="mailto:miguelbeltransanz@gmail.com" className="btn btn-secondary">Contact us</a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     );
-  }
-
-  goToContract() {
-    const addressContainer = document.getElementById("contractInput");
-    const address = addressContainer.value;
-    const network = this.props.match.params.network;
-    const route = `/${network}/${address}`;
-
-    this.props.history.push(route);
   }
 
   createNewPublishingPlatform(event) {

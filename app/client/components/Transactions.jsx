@@ -45,22 +45,31 @@ class Transactions extends Component {
     });
 
     return (
-      <div className="staticContainer">
-        <table className="transactionsTable">
-          <thead>
-            <tr>
-              <td className="date">Time</td>
-              <td className="transactionHash">Hash</td>
-              <td className="description">Description</td>
-              <td className="params">Params</td>
-              <td className="status">Processed?</td>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions}
-          </tbody>
-        </table>
-      </div>
+      <section className="container page-body-wrapper">
+        <div className="content-wrapper full-page-wrapper" id="#titleContent">
+          <div className="row">
+            <div className="col-12">
+              <h1 className="page-title">Transactions in {this.props.network.name}</h1>
+              <div className="card card-body">
+                <table className="table table-hover">
+                  <thead>
+                    <tr>
+                      <th className="date">Time</th>
+                      <th className="transactionHash">Hash</th>
+                      <th className="description">Description</th>
+                      <th className="params">Params</th>
+                      <th className="status">Processed?</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {transactions}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     )
   }
 }

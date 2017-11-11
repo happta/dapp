@@ -53,7 +53,11 @@ module.exports = {
       { test: /\.scss$/, loader: 'style!css!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded' },
       { test: /\.json$/, loader: 'json-loader' },
       { test: /\.css$/, loader: 'style-loader!css-loader' },
-      { test: /\.sol$/, loaders: ['solc'] }
+      { test: /\.sol$/, loaders: ['solc'] },
+      { test: /\.(ttf|otf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/, 
+        loader: 'file-loader?name=fonts/[name].[ext]' },
+      { test: /\.(jpe?g|png|gif|svg)$/, 
+        loader: 'file-loader?name=images/[name].[ext]' }
     ],
 
     noParse: /\.min\.js/

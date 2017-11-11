@@ -36,30 +36,40 @@ class Blog extends Component {
 
   render() {
     if(this.state.isAValidBlog == undefined) {
-      return <Spinner />;
+      return (
+        <section className="container page-body-wrapper">
+          <div className="content-wrapper full-page-wrapper" id="#titleContent">
+            <Spinner />;
+          </div>
+        </section>
+      )
     }
 
     if(this.state.isAValidBlog == false) {
       return <NotFound />;
     }
 
-    const publishPostLink = (
+    const publishPostButton = (
       this.state.isTheOwner &&
-      <div>
-        <div className="separator"></div>
-        <button className="Button Button--primary Button--block" onClick={this.goToPublishPage.bind(this)}>Publish</button>
+      <div className="OwnerArea">
+        <button className="btn btn-primary" onClick={this.goToPublishPage.bind(this)}>Publish</button>
       </div>
-
     )
 
     return (
-      <div className="container">
-        <div className="blogContainer">
-          <Title contract={this.contract()} />
-          <Entries contract={this.contract()} />
-          {publishPostLink}
+      <section className="container page-body-wrapper">
+        <div className="content-wrapper full-page-wrapper" id="#titleContent">
+          <div className="row">
+            <div className="col-1"></div>
+            <div className="col-10">
+              <Title contract={this.contract()} />
+              {publishPostButton}
+              <Entries contract={this.contract()} />
+            </div>
+            <div className="col-1"></div>
+          </div>
         </div>
-      </div>
+      </section>
     )
   }
 

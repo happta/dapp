@@ -26,25 +26,34 @@ class Settings extends Component {
 
   render() {
     return (
-      <div className="container formsContainer">
-        <h2 className="settingsTitle">Settings Page</h2>
-        <div className="separator"></div>
-        <div className="FormGroup">
-          <label>IPFS Node host (should be writable and have cors activated):</label>
-          <input type="text" className="Input" value={this.state.host} id="hostField" onChange={this.changeHost} />
+      <section className="container page-body-wrapper">
+        <div className="content-wrapper full-page-wrapper" id="#titleContent">
+          <div className="row">
+            <div className="col-2"></div>
+            <div className="col-8">
+              <h1 className="page-title">Settings Page</h1>
+              <div className="card">
+                <div className="card-body">
+                  <div className="form-group">
+                    <label htmlFor="hostField">IPFS Node host (should be writable and have cors activated):</label>
+                    <input type="text" className="form-control p-input" value={this.state.host} id="hostField" onChange={this.changeHost} />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="portField">IPFS Node port:</label>
+                    <input type="text" className="form-control p-input" value={this.state.port} id="portField" onChange={this.changePort} />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="protocolField">IPFS Node protocol:</label>
+                    <input type="text" className="form-control p-input" value={this.state.protocol} id="protocolField" onChange={this.changeProtocol} />
+                  </div>
+                  <button className="btn btn-secondary cursor" onClick={this.reset} id="resetSettings">Reset to default node</button>
+                </div>
+              </div>
+            </div>
+            <div className="col-2"></div>
+          </div>
         </div>
-        <div className="FormGroup">
-          <label>IPFS Node port:</label>
-          <input type="text" className="Input" value={this.state.port} id="portField" onChange={this.changePort} />
-        </div>
-        <div className="FormGroup">
-          <label>IPFS Node protocol:</label>
-          <input type="text" className="Input" value={this.state.protocol} id="protocolField" onChange={this.changeProtocol} />
-        </div>
-        <div className="FormGroup">
-          <button className="Button Button--primary Button--block" onClick={this.reset} id="resetSettings">Reset to default node</button>
-        </div>
-      </div>
+      </section>
     )
   }
 

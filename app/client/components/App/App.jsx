@@ -61,17 +61,24 @@ class App extends Component {
         lightWalletClient={this.lightWalletClient()} />
     )
 
+    const TransactionsPage = (props) => (
+      <Transactions
+        {...props}
+        network={this.network()} />
+    )
+
     return (
       <div>
         <Header
+          {...this.props}
           network={this.network()}
           lightWallet={this.lightWallet()}
-          handleWriterMode={this.handleWriterMode.bind(this)}
+          toggleWriterMode={this.toggleWriterMode.bind(this)}
           writerModeEnabled={this.state.writerModeEnabled} />
 
         <Switch>
           <Route path="/:network/settings" exact component={Settings} />
-          <Route path="/:network/transactions" exact component={Transactions} />
+          <Route path="/:network/transactions" exact component={TransactionsPage} />
           <Route path="/:network/:address/publish" render={PublishPage} />
           <Route path="/:network/:address" render={BlogPage} />
           <Route path="/:network" render={ContractSelectorPage} />
@@ -111,11 +118,9 @@ class App extends Component {
   }
 
 
-  handleWriterMode(event) {
-    const activatedOrNot = event.target.checked
-
+  toggleWriterMode() {
     this.setState({
-      writerModeEnabled: activatedOrNot,
+      writerModeEnabled: !this.state.writerModeEnabled,
       writerNetwork: undefined
     })
   }

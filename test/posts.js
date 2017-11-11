@@ -49,15 +49,12 @@ var App = {
 
   expectToHavePost: function(post, browser) {
     browser.pause(1000);
-    browser.assert.containsText("body", this.titleFor(post.title))
+    browser.assert.containsText("body", this.getDate())
+    browser.assert.containsText("body", post.title)
   },
 
   expectToHaveContent: function(text, browser) {
     browser.assert.containsText("body", text)
-  },
-
-  titleFor: function(title) {
-    return (this.getDate() + ' | ' + title)
   },
 
   getDate: function() {

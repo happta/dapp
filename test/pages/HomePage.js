@@ -12,7 +12,7 @@ class HomePage {
   }
 
   expectToBeInHomePage() {
-    this.browser.assert.containsText("body", "GO TO BLOG");
+    this.browser.assert.containsText("body", "Create Platform");
   }
 
   goToSettingsPage() {

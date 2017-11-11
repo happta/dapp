@@ -31,22 +31,31 @@ class Publish extends Component {
 
   render() {
     if(this.state.publishingPost) {
-      return <Spinner />
+      return (
+        <section className="container page-body-wrapper">
+          <div className="content-wrapper full-page-wrapper">
+          <Spinner />
+          </div>
+        </section>
+      )
     }
 
     return (
-      <div className="container formsContainer">
-        <div className="FormGroup">
-          <label>Title:</label>
-          <input type="text" className="Input" id="newPostTitle"/>
-          <label>Content (in markdown):</label>
-          <textarea className="Textarea" id="newPostContent"></textarea>
+      <section className="container page-body-wrapper">
+        <div className="content-wrapper full-page-wrapper">
+          <form className="forms-sample">
+            <div className="form-group">
+              <label htmlFor="newPostTitle">Title:</label>
+              <input type="text" className="form-control p-input" id="newPostTitle"/>
+            </div>
+            <div className="form-group">
+              <label htmlFor="newPostContent">Content (in markdown):</label>
+              <textarea id="newPostContent"></textarea>
+            </div>
+            <button className="btn btn-primary cursor" onClick={this.publishEntry}>Publish</button>
+          </form>
         </div>
-        <div className="FormGroup">
-          <button className="Button Button--primary marginRight-sm">Preview</button>
-          <button className="Button Button--primary" onClick={this.publishEntry}>Publish</button>
-        </div>
-      </div>
+      </section>
     )
   }
 

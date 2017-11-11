@@ -8,23 +8,21 @@ class NetworkBadge extends Component {
   }
 
   render() {
-    if(this.props.selectionDisabled) {
-      return (
-        <div className="menuButton">
-          {this.props.network.name}
-        </div>
-      )
-    }
-
     const networkOptions = this.props.lightWallet.networks().map(function(network){
       return <option key={network.reference}>{network.name}</option>
     }.bind(this));
 
     return (
       <div>
-        <select className="Select selectNetwork" onChange={this.changeNetwork.bind(this)} defaultValue={this.props.network.name}>
-          {networkOptions}
-        </select>
+        <div className="input-group mb-2 mr-sm-2 mb-sm-0">
+          <div className="input-group-addon">
+            <i className="mdi mdi-access-point-network"></i>
+          </div>
+
+          <select className="Select selectNetwork" onChange={this.changeNetwork.bind(this)} defaultValue={this.props.network.name} disabled={this.props.selectionDisabled}>
+            {networkOptions}
+          </select>
+        </div>
       </div>
     );
   }

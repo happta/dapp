@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Modal from 'react-modal';
 import showdown from 'showdown';
 import DOMPurify from 'dompurify';
 
@@ -9,19 +8,14 @@ class Entry extends Component {
     super(props);
 
     this.state = {
-      modalIsOpen: false
+      contentOpened: false
     };
 
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
+    this.toggleContent = this.toggleContent.bind(this);
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
-  }
-
-  closeModal() {
-    this.setState({modalIsOpen: false});
+  toggleContent() {
+    this.setState({contentOpened: !this.state.contentOpened});
   }
 
   render() {
@@ -34,19 +28,16 @@ class Entry extends Component {
     const title = entry.title;
 
     return (
-      <div onClick={this.openModal} className="entryTitle" data-title={title}>
-        <h5>{this.formatDate(entry.date)} | {title}</h5>
-
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          contentLabel="Example Modal"
-        >
-
-          <h1>{title}</h1>
-          <div dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div>
-          <button onClick={this.closeModal}>Close</button>
-        </Modal>
+      <div className="card Entry " data-title={title}>
+        <div className="card-body Entry-body">
+          <div onClick={this.toggleContent}>
+            <p>{this.formatDate(entry.date)}</p>
+            <h2>{title}</h2>
+          </div>
+          <div>
+            { this.state.contentOpened && <div dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div> }
+          </div>
+        </div>
       </div>
     );
   }

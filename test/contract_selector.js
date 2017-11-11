@@ -7,8 +7,6 @@ module.exports = {
 
     App.fillContractAddress(this.BLOG_ADDRESS, browser);
 
-    App.goToBlog(browser);
-
     App.expectToHaveTitle(this.BLOG_TITLE, browser);
 
     browser.end();
@@ -18,8 +16,6 @@ module.exports = {
     App.goToContractSelector(browser);
 
     App.fillContractAddress('NOT_A_BLOG', browser);
-
-    App.goToBlog(browser);
 
     App.expectBlogToHaveNotFoundAlert(browser);
 
@@ -40,12 +36,7 @@ var App = {
 
   fillContractAddress: function(address, browser) {
     browser.setValue("#contractInput", address)
-  },
-
-  goToBlog: function(browser) {
-    browser.
-      click("#goToContract").
-      pause(3000)
+    browser.pause(1000)
   },
 
   expectToHaveTitle: function(title, browser) {

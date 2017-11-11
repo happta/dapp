@@ -27,51 +27,77 @@ class Header extends Component {
     clearInterval(this.interval);
   }
 
+  goToContract() {
+    const addressContainer = document.getElementById("contractInput");
+    const address = addressContainer.value;
+    const network = this.props.match.params.network;
+    const route = `/${network}/${address}`;
+
+    this.props.history.push(route);
+  }
+
+  _handleKeyPress(e) {
+    const arrowKeys = ["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft"]
+
+    if(arrowKeys.indexOf(e.key) == -1) {
+      this.goToContract();
+    }
+  }
+
+  modeIndicator() {
+    if(!this.props.writerModeEnabled || this.props.writerModeAvailable) {
+      return (
+        <i className="mdi mdi-feather cursor" onClick={this.props.toggleWriterMode}></i>
+      )
+    }
+
+    return (
+      <i className="mdi mdi-book-open-variant cursor" onClick={this.props.toggleWriterMode}></i>
+    )
+  }
+
   render() {
     const network = this.props.network;
 
     const transactionsHistory = new TransactionsHistory(network.reference);
 
     return (
-      <header className="header">
-        <div className="menuContainer">
-          <div className="smallMenuItem">
-            <div className="logotype">
-              happta
-            </div>
+      <nav className="navbar nav navbar-primary col-lg-12 col-12 fixed-top d-flex flex-row">
+        <div className="navbar-menu-wrapper d-flex align-items-center w-100">
+          <div>
+            <NavLink className="menuButton" to={`/${network.reference}`} id="goToHome">
+              <span className="logotype">happta</span>
+            </NavLink>
           </div>
-          <div className="smallMenuItem">
-            <NavLink className="menuButton" to={`/${network.reference}`} id="goToHome">Home</NavLink>
+          <div className="form-inline mt-2 mt-md-0 d-none d-lg-block ml-lg-auto">
+            <input className="form-control search" type="text" placeholder="Contract address" onKeyUp={this._handleKeyPress.bind(this)} maxLength="42" id="contractInput" />
           </div>
-          <div className="smallMenuItem">
-            <NavLink className="menuButton" to={`/${network.reference}/settings`} id="goToSettings">Settings</NavLink>
-          </div>
-
-          <div className="smallMenuItem">
-            <NavLink className="menuButton" to={`/${network.reference}/transactions`} id="goToSettings">Transactions</NavLink>
-          </div>
-
-          <div className="menuSeparator"></div>
-          <div className="mediumMenuItem">
+          <ul className="navbar-nav">
+            <li className="nav-item">
+              <NavLink className="nav-link count-indicator" to={`/${network.reference}`}>
+                <i className="mdi mdi-home"></i>
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link count-indicator">
+                {this.modeIndicator()}
+              </a>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link count-indicator" to={`/${network.reference}/transactions`}>
+                <i className="mdi mdi-clock-fast"></i>
+                <span className="count bg-warning">{transactionsHistory.countPendingTransactions()}</span>
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink className="nav-link count-indicator" to={`/${network.reference}/settings`} id="goToSettings">
+                <i className="mdi mdi-settings"></i>
+              </NavLink>
+            </li>
             <NetworkBadge network={network} selectionDisabled={this.props.writerModeEnabled} lightWallet={this.props.lightWallet} />
-          </div>
-          <div className="mediumMenuItem">
-            <div className="menuButton">
-              <div className="tooltip">
-                Publisher: <input type="checkbox" id="writerModeEnabled" onChange={this.props.handleWriterMode} disabled={!this.state.writerModeAvailable}/>
-
-                { !this.state.writerModeAvailable && <span className="tooltipText">You have to have installed MetaMask or Mist.</span> }
-              </div>
-            </div>
-          </div>
-          <div className="smallMenuItem" onClick={transactionsHistory.checkPendingTransactions.bind(transactionsHistory)}>
-            <div className="tooltip">
-              {transactionsHistory.countPendingTransactions()}
-              <span className="tooltipText">Pending transactions on the current network.</span>
-            </div>
-          </div>
+          </ul>
         </div>
-      </header>
+      </nav>
     )
   }
 }

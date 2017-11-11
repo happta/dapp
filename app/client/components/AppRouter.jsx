@@ -7,12 +7,14 @@ import App from './App/App';
 class AppRouter extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-          <Redirect from="/" exact to="/mainnet" />
-          <Route path="/:network/:resource?" component={App} />
-        </Switch>
-      </BrowserRouter>
+      <div className="container-scroller">
+        <BrowserRouter>
+          <Switch>
+            <Redirect from="/" exact to="/mainnet" />
+            <Route path="/:network/:resource?" component={App} />
+          </Switch>
+        </BrowserRouter>
+      </div>
     )
   }
 }

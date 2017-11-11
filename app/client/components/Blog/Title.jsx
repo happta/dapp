@@ -26,8 +26,7 @@ class Title extends Component {
 
     return (
       <div>
-        <h1 className="blogTitle" id="titleContent">{this.state.title}</h1>
-        <div className="separator"></div>
+        <h1 className="page-title" id="titleContent">{this.state.title}</h1>
       </div>
     )
   }
