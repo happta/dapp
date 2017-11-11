@@ -15,10 +15,20 @@ class Transactions extends Component {
     clearInterval(this.interval);
   }
 
-  render() {
-    const network = this.props.match.params.network;
+  linkForTx(tx) {
+    const shortHash = `${tx.substring(0, 4)}...${tx.substring(tx.length - 4, tx.length)}`
 
-    const transactionsHistory = new TransactionsHistory(network);
+    if(!this.props.network.transactionExplorer) {
+      return shortHash;
+    }
+
+    return (
+      <a target="_blank" href={`${this.props.network.transactionExplorer}/${tx}`}>{shortHash}</a>
+    )
+  }
+
+  render() {
+    const transactionsHistory = new TransactionsHistory(this.props.network.reference);
 
     const processedText = function(isProcessed) {
       if(isProcessed) {
@@ -31,18 +41,16 @@ class Transactions extends Component {
     const chronologicallyRecords = transactionsHistory.pastTransactions().reverse();
 
     const transactions = chronologicallyRecords.map(function(transaction) {
-      const shortHash = `${transaction.hash.substring(0, 4)}...${transaction.hash.substring(transaction.hash.length - 4, transaction.hash.length)}`
-
       return (
         <tr key={transaction.hash} data-hash={transaction.hash}>
           <td className="date">{transaction.startingTime}</td>
-          <td>{shortHash}</td>
+          <td>{this.linkForTx(transaction.hash)}</td>
           <td>{transaction.description}</td>
           <td>{JSON.stringify(transaction.params)}</td>
           <td>{processedText(transaction.processed)}</td>
         </tr>
       )
-    });
+    }.bind(this));
 
     return (
       <section className="container page-body-wrapper">

@@ -63,31 +63,36 @@ class LightWallet {
         name: 'Mainnet',
         reference: 'mainnet',
         endpoint: 'https://mainnet.infura.io/',
-        id: 1
+        id: 1,
+        transactionExplorer: "https://etherscan.io/tx/"
       },
       {
         name: 'Ropsten',
         reference: 'ropsten',
         endpoint: 'https://ropsten.infura.io/',
-        id: 3
+        id: 3,
+        transactionExplorer: "https://ropsten.etherscan.io/tx/"
       },
       {
         name: 'Rinkerby',
         reference: 'rinkerby',
         endpoint: 'https://rinkerby.infura.io/',
-        id: 4
+        id: 4,
+        transactionExplorer: "https://rinkerby.etherscan.io/tx/"
       },
       {
         name: 'Kovan',
         reference: 'kovan',
         endpoint: 'https://kovan.infura.io/',
-        id: 42
+        id: 42,
+        transactionExplorer: "https://kovan.etherscan.io/tx/"
       },
       {
         name: 'Privatenet',
         reference: 'privatenet',
         endpoint: 'http://testrpc:8545',
-        id: 999999
+        id: 999999,
+        transactionExplorer: undefined
       }
     ]);
   }

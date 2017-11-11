@@ -5,6 +5,8 @@ import 'simplemde/dist/simplemde.min.css';
 import Contract from './Blog/Contract';
 import Spinner from './Blog/Spinner';
 
+import TransactionsHistory from './TransactionsHistory'
+
 class Publish extends Component {
   constructor(props) {
     super(props);
@@ -71,7 +73,19 @@ class Publish extends Component {
 
     const post = { title: title, content: content }
 
-    this.contract.publishPost(post, this.redirectToBlog.bind(this));
+    this.contract.publishPost(post, this.registerEvent.bind(this), this.redirectToBlog.bind(this));
+  }
+
+  registerEvent(tx, address, title) {
+    const transactionsHistory = new TransactionsHistory(this.props.match.params.network);
+
+    const eventTitle = "Publish content in publishing platform";
+    const additionalInfo = {
+      'Title': title,
+      'Contract address': address
+    }
+
+    transactionsHistory.registerNewTransaction(tx, eventTitle, additionalInfo);
   }
 
   redirectToBlog() {

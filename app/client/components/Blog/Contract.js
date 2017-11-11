@@ -23,17 +23,19 @@ class Contract {
     });
   }
 
-  publishPost(post, callback) {
+  publishPost(post, registerEvent, callback) {
     const postAsBuffer = new Buffer(JSON.stringify(post))
 
     this.uploadContent(postAsBuffer).
-      then(hash => this.registerInTheContract(hash, callback));
+      then(hash => this.registerInTheContract(hash, post, registerEvent, callback));
   }
 
-  registerInTheContract(hash, callback) {
+  registerInTheContract(hash, post, registerEvent, callback) {
     this._remoteInstance().publishPost(hash, {
       from: this.lightWalletClient.eth.accounts[0]
     }, function(error, tx) {
+      registerEvent(tx, this.address, post.title);
+
       this.waitForTransaction(tx).then(function(a) {
         callback(tx);
       });
