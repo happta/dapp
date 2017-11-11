@@ -24,7 +24,7 @@ module.exports = {
     browser.end();
   },
 
-  DEFAULT_HOST_NAME: "50.112.194.81",
+  DEFAULT_HOST_NAME: "5.196.89.46",
   DEFAULT_PORT: "8080",
   DEFAULT_PROTOCOL: "http",
 
