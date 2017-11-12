@@ -19,7 +19,7 @@ class ContractSelector extends Component {
           <form className="form-inline row">
             <input type="text" className="form-control p-input col-9" id="newPlatformTitle" placeholder="Title" />
             <div className="col-3">
-              <button disabled={!this.props.writerModeEnabled} className="btn btn-primary" onClick={this.createNewPublishingPlatform.bind(this)}>Create Platform</button>
+              <button disabled={!this.props.writerModeEnabled} className="btn btn-primary cursor" onClick={this.createNewPublishingPlatform.bind(this)}>Create Platform</button>
             </div>
           </form>
         </div>
@@ -105,9 +105,10 @@ class ContractSelector extends Component {
 
     const title = document.getElementById("newPlatformTitle").value
 
+    this.props.lightWalletClient.eth.getAccounts(function(error, accounts) {
     contract.new(title,
       {
-        from: this.props.lightWalletClient.eth.accounts[0],
+        from: accounts[0],
         data: compiledContract.bytecode
       }, function (e, tentativeContract){
         this.registerEvent(tentativeContract.transactionHash, title);
@@ -125,6 +126,7 @@ class ContractSelector extends Component {
           }.bind(this));
         }
       }.bind(this));
+    }.bind(this));
   }
 
   waitForTransaction(txnHash, interval) {

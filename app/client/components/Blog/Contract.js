@@ -31,14 +31,16 @@ class Contract {
   }
 
   registerInTheContract(hash, post, registerEvent, callback) {
-    this._remoteInstance().publishPost(hash, {
-      from: this.lightWalletClient.eth.accounts[0]
-    }, function(error, tx) {
-      registerEvent(tx, this.address, post.title);
+    this.lightWalletClient.eth.getAccounts(function(error, accounts) {
+      this._remoteInstance().publishPost(hash, {
+        from: accounts[0]
+      }, function(error, tx) {
+        registerEvent(tx, this.address, post.title);
 
-      this.waitForTransaction(tx).then(function(a) {
-        callback(tx);
-      });
+        this.waitForTransaction(tx).then(function(a) {
+          callback(tx);
+        });
+      }.bind(this));
     }.bind(this));
   }
 

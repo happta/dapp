@@ -117,7 +117,6 @@ class App extends Component {
     this.props.history.push(`/${network.reference}`)
   }
 
-
   toggleWriterMode() {
     this.setState({
       writerModeEnabled: !this.state.writerModeEnabled,

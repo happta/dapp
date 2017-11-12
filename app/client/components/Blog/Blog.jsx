@@ -90,11 +90,11 @@ class Blog extends Component {
   }
 
   checkIfIsTheOwner(ownerAddress) {
-    const currentAddress = this.props.lightWalletClient.eth.accounts[0];
-
-    this.setState({
-      isTheOwner: ownerAddress == currentAddress
-    });
+    this.props.lightWalletClient.eth.getAccounts(function(error, accounts) {
+      this.setState({
+        isTheOwner: ownerAddress == accounts[0]
+      });
+    }.bind(this));
   }
 }
 
