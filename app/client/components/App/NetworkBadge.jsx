@@ -19,7 +19,7 @@ class NetworkBadge extends Component {
             <i className="mdi mdi-access-point-network"></i>
           </div>
 
-          <select className="Select selectNetwork" onChange={this.changeNetwork.bind(this)} defaultValue={this.props.network.name} disabled={this.props.selectionDisabled}>
+          <select className="Select selectNetwork" onChange={this.changeNetwork.bind(this)} value={this.props.network.name} disabled={this.props.selectionDisabled}>
             {networkOptions}
           </select>
         </div>
