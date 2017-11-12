@@ -33,11 +33,15 @@ class Entries extends Component {
       )
     }
 
-    const entries = this.state.posts.map(function(post) {
+    const entries = this.state.posts.sort(this.newPostsFirst).map(function(post) {
       return <Entry entry={post} key={`${post.identifier}${post.date}`} />
     }.bind(this));
 
     return entries;
+  }
+
+  newPostsFirst(aPost, anotherPost) {
+    return aPost.date < anotherPost.date;
   }
 
   fetchPosts() {

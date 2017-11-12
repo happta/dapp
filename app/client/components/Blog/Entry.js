@@ -30,12 +30,12 @@ class Entry extends Component {
     return (
       <div className="card Entry " data-title={title}>
         <div className="card-body Entry-body">
-          <div onClick={this.toggleContent}>
+          <div onClick={this.toggleContent} className="cursor">
             <p>{this.formatDate(entry.date)}</p>
             <h2>{title}</h2>
           </div>
           <div>
-            { this.state.contentOpened && <div dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div> }
+            { this.state.contentOpened && <div><hr /><div dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div></div> }
           </div>
         </div>
       </div>
