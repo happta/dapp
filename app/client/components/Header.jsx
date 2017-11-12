@@ -78,11 +78,11 @@ class Header extends Component {
                 <i className="mdi mdi-home"></i>
               </NavLink>
             </li>
-            <li className="nav-item">
+            {this.state.writerModeAvailable && <li className="nav-item">
               <a className="nav-link count-indicator">
                 {this.modeIndicator()}
               </a>
-            </li>
+            </li>}
             <li className="nav-item">
               <NavLink className="nav-link count-indicator" to={`/${network.reference}/transactions`}>
                 <i className="mdi mdi-clock-fast"></i>
