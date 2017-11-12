@@ -8,7 +8,7 @@ class Entry extends Component {
     super(props);
 
     this.state = {
-      contentOpened: false
+      contentOpened: this.props.isInitiallyOpen
     };
 
     this.toggleContent = this.toggleContent.bind(this);
@@ -28,16 +28,27 @@ class Entry extends Component {
     const title = entry.title;
 
     return (
-      <div className="card Entry " data-title={title}>
-        <div className="card-body Entry-body">
-          <div onClick={this.toggleContent} className="cursor">
-            <p>{this.formatDate(entry.date)}</p>
-            <h2>{title}</h2>
-          </div>
-          <div>
-            { this.state.contentOpened && <div><hr /><div dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div></div> }
+      <div>
+        <div className={`card Entry ${this.props.featured && 'Entry-featured' }`} data-title={title} ipfs-hash={entry.identifier}>
+          <div className="card-body Entry-body">
+            <div onClick={this.toggleContent} className="cursor">
+              <p>{this.formatDate(entry.date)}</p>
+              <h2>{title}</h2>
+            </div>
+            <div>
+              { this.state.contentOpened &&
+                <div>
+                  <hr />
+                  <div dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div>
+                  <hr />
+                  <p><a href={`${window.location.href}/${entry.identifier}`}>Direct link</a></p>
+                  <p>IPFS hash: {entry.identifier} </p>
+                </div> }
+            </div>
           </div>
         </div>
+
+        {this.props.featured && <div><h3>Other content:</h3></div> }
       </div>
     );
   }

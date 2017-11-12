@@ -64,7 +64,7 @@ class Blog extends Component {
             <div className="col-10">
               <Title contract={this.contract()} />
               {publishPostButton}
-              <Entries contract={this.contract()} />
+              <Entries target={this.props.match.params.reference} contract={this.contract()} />
             </div>
             <div className="col-1"></div>
           </div>

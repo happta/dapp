@@ -34,8 +34,18 @@ class Entries extends Component {
     }
 
     const entries = this.state.posts.sort(this.newPostsFirst).map(function(post) {
-      return <Entry entry={post} key={`${post.identifier}${post.date}`} />
+      return <Entry isInitiallyOpen={false} entry={post} key={`${post.identifier}${post.date}`} />
     }.bind(this));
+
+    if(this.props.target) {
+      const featuredPost = this.state.posts.find(function(post) {
+        return post.identifier == this.props.target
+      }.bind(this));
+
+      if (featuredPost) {
+        entries.unshift(<Entry isInitiallyOpen={true} entry={featuredPost} key={`${featuredPost.identifier}${featuredPost.date}-featured`} featured />)
+      }
+    }
 
     return entries;
   }

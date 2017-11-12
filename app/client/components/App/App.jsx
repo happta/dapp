@@ -80,7 +80,7 @@ class App extends Component {
           <Route path="/:network/settings" exact component={Settings} />
           <Route path="/:network/transactions" exact component={TransactionsPage} />
           <Route path="/:network/:address/publish" render={PublishPage} />
-          <Route path="/:network/:address" render={BlogPage} />
+          <Route path="/:network/:address/:reference?" render={BlogPage} />
           <Route path="/:network" render={ContractSelectorPage} />
         </Switch>
       </div>
