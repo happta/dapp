@@ -48,7 +48,7 @@ class Entry extends Component {
           </div>
         </div>
 
-        {this.props.featured && <div><h3>Other content:</h3></div> }
+        {this.props.featured && <div><h3>Content:</h3></div> }
       </div>
     );
   }

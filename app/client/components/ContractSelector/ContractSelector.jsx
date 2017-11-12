@@ -22,6 +22,8 @@ class ContractSelector extends Component {
               <button disabled={!this.props.writerModeEnabled} className="btn btn-primary cursor" onClick={this.createNewPublishingPlatform.bind(this)}>Create Platform</button>
             </div>
           </form>
+
+          <p style={{textAlign: 'center'}}><a href="https://github.com/happta/dapp/blob/master/contracts/Blog.sol">Contract source code</a></p>
         </div>
       </div>
     )
@@ -32,7 +34,7 @@ class ContractSelector extends Component {
           <div className="row grid-margin">
             <div className="col-1"></div>
             <div className="col-10">
-              <div className="alert alert-warning">In order to create a new platform or publish content you have to have the writer mode on. You can activate if you have installed MetaMask or Mist. Activate it by clicking the <i class="mdi mdi-feather cursor"></i> in the header.</div>
+              <div className="alert alert-warning">In order to create a new platform or publish content you have to have the writer mode on. You can activate if you have installed MetaMask or Mist. Activate it by clicking the <i className="mdi mdi-feather cursor"></i> in the header.</div>
               <div></div>
               {!this.state.publishingContract && publishContractForm}
               {this.state.publishingContract && <Spinner />}
