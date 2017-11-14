@@ -74,11 +74,11 @@ class LightWallet {
         transactionExplorer: "https://ropsten.etherscan.io/tx/"
       },
       {
-        name: 'Rinkerby',
+        name: 'Rinkeby',
         reference: 'rinkerby',
-        endpoint: 'https://rinkerby.infura.io/',
+        endpoint: 'https://rinkeby.infura.io/',
         id: 4,
-        transactionExplorer: "https://rinkerby.etherscan.io/tx/"
+        transactionExplorer: "https://rinkeby.etherscan.io/tx/"
       },
       {
         name: 'Kovan',
