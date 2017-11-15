@@ -7,6 +7,8 @@ import Spinner from './Blog/Spinner';
 
 import TransactionsHistory from './TransactionsHistory'
 
+import showdown from 'showdown';
+
 class Publish extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +29,11 @@ class Publish extends Component {
   componentDidMount() {
     this.editor = new SimpleMDE({
       element: document.getElementById("newPostContent"),
-      spellChecker: false
+      spellChecker: false,
+      previewRender: function(plainText) {
+        const converter = new showdown.Converter();
+        return converter.makeHtml(plainText)
+      }
     });
   }
 
