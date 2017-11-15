@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Entry from './Entry'
+import ContentView from './ContentView'
 import Spinner from './Spinner'
 
 class Entries extends Component {
@@ -33,21 +34,31 @@ class Entries extends Component {
       )
     }
 
-    const entries = this.state.posts.sort(this.newPostsFirst).map(function(post) {
-      return <Entry isInitiallyOpen={false} entry={post} key={`${post.identifier}${post.date}`} />
+    if(this.props.target) {
+      return this.singleEntry(this.props.target);
+    } else {
+      return this.allEntries();
+    }
+  }
+
+  singleEntry(target) {
+    const featuredPost = this.state.posts.find(function(post) {
+      return post.identifier == this.props.target
     }.bind(this));
 
-    if(this.props.target) {
-      const featuredPost = this.state.posts.find(function(post) {
-        return post.identifier == this.props.target
-      }.bind(this));
-
-      if (featuredPost) {
-        entries.unshift(<Entry isInitiallyOpen={true} entry={featuredPost} key={`${featuredPost.identifier}${featuredPost.date}-featured`} featured />)
-      }
+    if (!featuredPost) {
+      return <div>Not found</div>
     }
 
-    return entries;
+    return (<ContentView entry={featuredPost} rootPath={this.props.rootPath} />)
+  }
+
+  allEntries() {
+    const entriesViews = this.state.posts.sort(this.newPostsFirst).map(function(post) {
+      return <Entry rootPath={this.props.rootPath} entry={post} key={`${post.identifier}${post.date}`} />
+    }.bind(this));
+
+    return entriesViews;
   }
 
   newPostsFirst(aPost, anotherPost) {

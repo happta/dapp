@@ -28,6 +28,21 @@ module.exports = {
     App.expectToHaveContent(this.POST_CONTENT, browser)
 
     browser.end();
+  },
+
+  'After entering the post, you can come back to the home page': function(browser) {
+    App.goToBlog(this.CONTRACT, browser);
+
+    App.clickOnPostWithTitle(this.POST_TITLE, browser);
+
+    App.expectToHaveContent(this.POST_CONTENT, browser);
+
+    App.comeBackToBlog(browser);
+
+    App.expectToHavePost(aPost, browser);
+    App.expectToHavePost(anotherPost, browser);
+
+    browser.end();
   }
 }
 
@@ -61,6 +76,10 @@ var App = {
     date = new Date;
 
     return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+  },
+
+  comeBackToBlog: function(browser) {
+    browser.click("#goToRootLink")
   }
 }
 

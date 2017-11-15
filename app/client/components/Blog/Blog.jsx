@@ -64,7 +64,10 @@ class Blog extends Component {
             <div className="col-10">
               <Title contract={this.contract()} />
               {publishPostButton}
-              <Entries target={this.props.match.params.reference} contract={this.contract()} />
+              <Entries
+                target={this.props.match.params.reference}
+                contract={this.contract()}
+                rootPath={`/${this.props.match.params.network}/${this.props.match.params.address}`} />
             </div>
             <div className="col-1"></div>
           </div>
