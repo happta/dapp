@@ -60,8 +60,8 @@ class Blog extends Component {
       <section className="container page-body-wrapper">
         <div className="content-wrapper full-page-wrapper" id="#titleContent">
           <div className="row">
-            <div className="col-1"></div>
-            <div className="col-10">
+            <div className="col-0 col-md-2"></div>
+            <div className="col-12 col-md-8">
               <Title contract={this.contract()} />
               {publishPostButton}
               <Entries
@@ -69,7 +69,7 @@ class Blog extends Component {
                 contract={this.contract()}
                 rootPath={`/${this.props.match.params.network}/${this.props.match.params.address}`} />
             </div>
-            <div className="col-1"></div>
+            <div className="col-0 col-md-2"></div>
           </div>
         </div>
       </section>

@@ -65,18 +65,84 @@
   padding: 40px;
 }
 
+// Title
+
+.platform-title {
+  font-size: 26px;
+  margin-bottom: 2.5rem;
+}
+
 // Entry
 
 .Entry {
   margin-bottom: 10px;
+  box-shadow: inset 0 0 0 1px #dae4ed, 0 5px 15px -5px rgba(0,0,0,.1) !important;
 }
 
 .Entry-body {
-  padding: 10px 25px !important;
+  padding: 30px 30px 12px 30px !important;
 }
 
-.Entry-featured {
-  border: 2px solid #FDCA2F !important;
+.Entry h2 {
+  font-size: 23px;
+  color: #193652;
+}
+
+.Entry .date {
+  color: #8fa1b3;
+  font-size: 16px;
+}
+
+// ContentView
+
+.ContentView.card {
+  box-shadow: none !important;
+  background-color: none;
+  padding: 0px
+}
+
+.ContentView .card-body {
+  padding: 0px !important;
+}
+
+.ContentView .card-body .header h2 {
+  font-size: 40px;
+  color: #373b4a;
+  font-weight: 900;
+}
+
+.ContentView .card-body .header {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.ContentView .card-body .header p {
+  color: #8fa1b3;
+  font-size: 18px;
+}
+
+.ContentView .card-body .actual-content p {
+  font-size: 16px !important;
+}
+
+.ContentView .card-body .actual-content h1,
+.ContentView .card-body .actual-content h2,
+.ContentView .card-body .actual-content h3 {
+  margin: 20px 0px;
+  font-weight: 900;
+}
+
+.ContentView .card-body .actual-content h1 {
+  font-size: 28px;
+}
+
+.ContentView .card-body .actual-content h2 {
+  font-size: 22px;
+}
+
+.ContentView .card-body .actual-content pre {
+  background-color: #F2F2F2;
 }
 
 // Blog
@@ -121,4 +187,5 @@
   padding-right: 35px;
   font-size: 35px;
   padding-top: 12px;
+  height: 10px;
 }

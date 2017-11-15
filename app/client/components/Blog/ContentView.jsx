@@ -20,28 +20,33 @@ class ContentView extends Component {
 
     return (
       <div>
-        <div className="card Entry Entry-featured" data-title={title} ipfs-hash={entry.identifier}>
-          <div className="card-body Entry-body">
-            <div className="cursor">
-              <p>{this.formatDate(entry.date)}</p>
+        <div className="card ContentView" data-title={title} ipfs-hash={entry.identifier}>
+          <div className="card-body">
+            <div className="cursor header">
               <h2>{title}</h2>
+              <p>on {this.formatDate(entry.date)}</p>
             </div>
             <div>
+              <div className="actual-content" dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div>
               <hr />
-              <div dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div>
-              <hr />
-              <p><a href={`${window.location.href}/${entry.identifier}`}>Direct link</a></p>
-              <p>IPFS hash: {entry.identifier} </p>
+              <h2>Share:</h2>
+              <ul>
+                <li><p><a href={`${window.location.href}/${entry.identifier}`}>Direct link</a></p></li>
+                <li><p><a href={`${window.location.href}/${entry.identifier}?noHeader=true`}>Direct link without header</a></p></li>
+                <li><p>IPFS hash: {entry.identifier}</p></li>
+              </ul>
             </div>
           </div>
         </div>
-        <NavLink id="goToRootLink" to={this.props.rootPath}>Go to other content</NavLink>
+        <NavLink id="goToRootLink" to={this.props.rootPath}><i className="mdi mdi-keyboard-backspace"></i> Go to the rest of the content</NavLink>
       </div>
     );
   }
 
   formatDate(date) {
-    return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+    const monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
+
+    return `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`
   }
 }
 

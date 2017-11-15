@@ -25,8 +25,8 @@ class Entry extends Component {
             <div className="card-body Entry-body">
               <NavLink className="like-no-link" to={`${this.props.rootPath}/${entry.identifier}`}>
                 <div className="cursor">
-                  <p>{this.formatDate(entry.date)}</p>
                   <h2>{title}</h2>
+                  <p className="date">on {this.formatDate(entry.date)}</p>
                 </div>
               </NavLink>
           </div>
@@ -36,7 +36,9 @@ class Entry extends Component {
   }
 
   formatDate(date) {
-    return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+    const monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
+
+    return `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`
   }
 }
 

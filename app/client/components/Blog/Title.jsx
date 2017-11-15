@@ -26,7 +26,7 @@ class Title extends Component {
 
     return (
       <div>
-        <h1 className="page-title" id="titleContent">{this.state.title}</h1>
+        <h1 className="page-title platform-title" id="titleContent">{this.state.title}</h1>
       </div>
     )
   }
