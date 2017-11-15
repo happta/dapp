@@ -38,7 +38,7 @@ class Contract {
         registerEvent(tx, this.address, post.title);
 
         this.waitForTransaction(tx).then(function(a) {
-          callback(tx);
+          callback(hash);
         });
       }.bind(this));
     }.bind(this));

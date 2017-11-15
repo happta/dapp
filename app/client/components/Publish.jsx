@@ -73,7 +73,7 @@ class Publish extends Component {
 
     const post = { title: title, content: content }
 
-    this.contract.publishPost(post, this.registerEvent.bind(this), this.redirectToBlog.bind(this));
+    this.contract.publishPost(post, this.registerEvent.bind(this), this.redirectToPublishedContent.bind(this));
   }
 
   registerEvent(tx, address, title) {
@@ -88,12 +88,12 @@ class Publish extends Component {
     transactionsHistory.registerNewTransaction(tx, eventTitle, additionalInfo);
   }
 
-  redirectToBlog() {
+  redirectToPublishedContent(reference) {
     this.setState({
       publishingPost: false
     })
 
-    this.props.history.push(`/${this.network}/${this.address}`);
+    this.props.history.push(`/${this.network}/${this.address}/${reference}`);
   }
 }
 
