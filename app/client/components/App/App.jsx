@@ -13,6 +13,9 @@ import TransactionsHistory from '../TransactionsHistory'
 
 import { Switch, Route } from 'react-router-dom'
 
+import * as queryString from 'query-string';
+
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -67,6 +70,9 @@ class App extends Component {
         network={this.network()} />
     )
 
+    const params = queryString.parse(location.search)
+    const showHeaderCondition = params['noHeader'] != 'true'
+
     return (
       <div>
         <Header
@@ -74,7 +80,8 @@ class App extends Component {
           network={this.network()}
           lightWallet={this.lightWallet()}
           toggleWriterMode={this.toggleWriterMode.bind(this)}
-          writerModeEnabled={this.state.writerModeEnabled} />
+          writerModeEnabled={this.state.writerModeEnabled}
+          showHeader={showHeaderCondition} />
 
         <Switch>
           <Route path="/:network/settings" exact component={Settings} />

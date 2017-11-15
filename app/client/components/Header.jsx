@@ -9,7 +9,8 @@ class Header extends Component {
     super(props);
 
     this.state = {
-      writerModeAvailable: undefined
+      writerModeAvailable: undefined,
+      show: this.props.showHeader
     }
   }
 
@@ -61,6 +62,12 @@ class Header extends Component {
 
     const transactionsHistory = new TransactionsHistory(network.reference);
 
+    if(!this.state.show) {
+      return (<div className="pull-header cursor" onClick={this.toggleHeader.bind(this)}>
+        <i className="mdi mdi-arrow-down"></i>
+      </div>)
+    }
+
     return (
       <nav className="navbar nav navbar-primary col-lg-12 col-12 fixed-top d-flex flex-row">
         <div className="navbar-menu-wrapper d-flex align-items-center w-100">
@@ -74,7 +81,7 @@ class Header extends Component {
           </div>
           <ul className="navbar-nav">
             <li className="nav-item">
-              <NavLink className="nav-link count-indicator" to={`/${network.reference}`}>
+              <NavLink className="nav-link" to={`/${network.reference}`}>
                 <i className="mdi mdi-home"></i>
               </NavLink>
             </li>
@@ -90,15 +97,26 @@ class Header extends Component {
               </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link count-indicator" to={`/${network.reference}/settings`} id="goToSettings">
+              <NavLink className="nav-link" to={`/${network.reference}/settings`} id="goToSettings">
                 <i className="mdi mdi-settings"></i>
               </NavLink>
             </li>
             <NetworkBadge network={network} selectionDisabled={this.props.writerModeEnabled} lightWallet={this.props.lightWallet} />
+            <li className="nav-item">
+              <a className="nav-link cursor" onClick={this.toggleHeader.bind(this)}>
+                <i className="mdi mdi-close"></i>
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
     )
+  }
+
+  toggleHeader() {
+    this.setState({
+      show: !this.state.show
+    })
   }
 }
 
