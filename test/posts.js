@@ -75,7 +75,9 @@ var App = {
   getDate: function() {
     date = new Date;
 
-    return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+    const monthNames = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ]
+
+    return `${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`
   },
 
   comeBackToBlog: function(browser) {
