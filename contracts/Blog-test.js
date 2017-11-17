@@ -169,9 +169,116 @@ describe("Blog", function(){
     });
   });
 
+  describe("Updates storage", function(){
+    it('an update can be saved and retrieved', function(done){
+      var anIPFSHash = 'QmcDge1SrsTBU8b9PBGTGYguNRnm84Kvg8axfGURxqZpR1'
+      var aParentPostId = 1
+      var initialTime = Math.round(new Date().getTime() / 1000)
+
+      var updatePost = function(data) {
+        return new Promise(function(resolve, reject) {
+          data.contract.updatePost(aParentPostId, anIPFSHash, {
+            from: contractOwner,
+            gas: 1000000
+          })
+          resolve(data);
+        });
+      }
+
+      var expectToHaveAnUpdate = function (data) {
+        var firstUpdateIndex = 0;
+        var post = data.contract.getUpdate(firstUpdateIndex)
+        var relations = {
+          parent: 0,
+          content: 1,
+          time: 2,
+        }
+        var savedIPSFHash = post[relations['content']]
+        var publishingDate = post[relations['time']]
+        var parent = post[relations['parent']]
+
+        assert.equal(savedIPSFHash, anIPFSHash);
+        assert(publishingDate > initialTime);
+        assert.equal(parent, aParentPostId);
+      }
+
+      deployBlogContract().
+        then(data => updatePost(data)).
+        then(data => expectToHaveAnUpdate(data)).
+        then(data => done());
+    });
+
+    it("the number of updates are retrievable", function(done){
+      var aParentPostId = 1
+      var updates = [
+        { contentReference: 'QmcDge1SrsTBU8b9PBGTGYguNRnm84Kvg8axfGURxqZpR1'},
+        { contentReference: 'Qaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'},
+      ]
+
+      var update = function(data, posts) {
+        return new Promise(function(resolve, reject) {
+          for (var i in updates) {
+            var update = updates[i]
+
+            data.contract.updatePost(aParentPostId, update.contentReference, {
+              from: contractOwner,
+              gas: 1000000
+            })
+          }
+
+          resolve(data);
+        });
+      }
+
+      var expectToHaveATwoUpdates = function(data) {
+        var numberOfUpdates = data.contract.numberOfUpdates.call()
+        assert.equal(numberOfUpdates, 2);
+      }
+
+      deployBlogContract().
+        then(data => update(data, updates)).
+        then(data => expectToHaveATwoUpdates(data)).
+        then(data => done());
+    });
+
+    it('only the contract owner can publish an update', function(done){
+      var anIPFSHash = 'QmcDge1SrsTBU8b9PBGTGYguNRnm84Kvg8axfGURxqZpR1'
+      var aPostIndex = 1;
+
+      var updatePostNotBeingTheOwner = function(data) {
+        return new Promise(function(resolve, reject) {
+          try {
+            data.contract.updatePost(aPostIndex, anIPFSHash, {
+              from: notTheContractOwner,
+              gas: 1000000
+            })
+          } catch(e) {
+            var notPerformedOperation = 'VM Exception while processing transaction: invalid opcode'
+
+            if (e.message != notPerformedOperation) {
+              throw e
+            }
+          }
+
+          resolve(data);
+        });
+      }
+
+      var expectToHaveZeroUpdates = function(data) {
+        var numberOfUpdates = data.contract.numberOfUpdates.call()
+        assert.equal(numberOfUpdates, 0);
+      }
+
+      deployBlogContract().
+        then(data => updatePostNotBeingTheOwner(data)).
+        then(data => expectToHaveZeroUpdates(data)).
+        then(data => done());
+    });
+  });
+
   describe("Version", function(){
-    it("the contract has version 0.1", function(done){
-      var version = '0.1'
+    it("the contract has version 0.2", function(done){
+      var version = '0.2'
       var expectToHaveVersion = function(data, version){
         return new Promise(function(resolve, reject) {
           var currentVersion = data.contract.VERSION.call();
