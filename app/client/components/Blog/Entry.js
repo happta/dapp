@@ -17,16 +17,16 @@ class Entry extends Component {
 
     const sanitizedContent = DOMPurify.sanitize(rawContent);
 
-    const title = entry.title;
+    const lastUpdate = entry.updates[0] || entry
 
     return (
       <div>
-        <div className="card Entry" data-title={title} ipfs-hash={entry.identifier}>
+        <div className="card Entry" data-title={lastUpdate.title} ipfs-hash={lastUpdate.identifier}>
             <div className="card-body Entry-body">
               <NavLink className="like-no-link" to={`${this.props.rootPath}/${entry.id}`}>
                 <div className="cursor">
-                  <h2>{title}</h2>
-                  <p className="date">on {this.formatDate(entry.date)}</p>
+                  <h2>{lastUpdate.title}</h2>
+                  <p className="date">on {this.formatDate(lastUpdate.date)}</p>
                 </div>
               </NavLink>
           </div>

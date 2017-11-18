@@ -7,6 +7,7 @@ import Settings from '../Settings/Settings'
 import Transactions from '../Transactions'
 import LightWallet from '../LightWallet'
 import Publish from '../Publish'
+import Update from '../Update'
 import NetworkNotSupported from './NetworkNotSupported'
 
 import TransactionsHistory from '../TransactionsHistory'
@@ -51,6 +52,12 @@ class App extends Component {
         lightWalletClient={this.lightWalletClient()} />
     )
 
+    const UpdatePage = (props) => (
+      <Update
+        {...props}
+        lightWalletClient={this.lightWalletClient()} />
+    )
+
     const BlogPage = (props) => (
       <Blog
         {...props}
@@ -87,7 +94,8 @@ class App extends Component {
           <Route path="/:network/settings" exact component={Settings} />
           <Route path="/:network/transactions" exact component={TransactionsPage} />
           <Route path="/:network/:address/publish" render={PublishPage} />
-          <Route path="/:network/:address/:reference?" render={BlogPage} />
+          <Route path="/:network/:address/:reference/update" exact render={UpdatePage} />
+          <Route path="/:network/:address/:reference?/:version?" render={BlogPage} />
           <Route path="/:network" render={ContractSelectorPage} />
         </Switch>
       </div>

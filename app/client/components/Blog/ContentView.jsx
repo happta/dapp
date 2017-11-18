@@ -9,22 +9,37 @@ class ContentView extends Component {
     super(props);
   }
 
-  render() {
+  entryToShow() {
     const entry = this.props.entry;
+
+    if(this.props.version) {
+      const versionEntries = entry.updates.reverse()
+      versionEntries.unshift(entry);
+
+      return versionEntries[this.props.version];
+    }
+
+    return entry.updates[0] || entry
+  }
+
+  render() {
     const converter = new showdown.Converter();
-    const rawContent = converter.makeHtml(entry.content);
 
+    let entryToShow = this.entryToShow();
+
+    console.log(entryToShow);
+
+    const rawContent = converter.makeHtml(entryToShow.content);
     const sanitizedContent = DOMPurify.sanitize(rawContent);
-
-    const title = entry.title;
 
     return (
       <div>
-        <div className="card ContentView" data-title={title} ipfs-hash={entry.identifier}>
+        {this.props.isTheOwner && <NavLink className="btn btn-primary" to={`${this.props.rootPath}/${this.props.entry.id}/update`}>Update</NavLink>}
+        <div className="card ContentView" data-title={entryToShow.title} ipfs-hash={entryToShow.identifier}>
           <div className="card-body">
             <div className="cursor header">
-              <h2>{title}</h2>
-              <p>on {this.formatDate(entry.date)}</p>
+              <h2>{entryToShow.title}</h2>
+              <p>on {this.formatDate(entryToShow.date)}</p>
             </div>
             <div>
               <div className="actual-content" dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div>
@@ -33,7 +48,7 @@ class ContentView extends Component {
               <ul>
                 <li><p><a href={`${window.location.href}`}>Direct link</a></p></li>
                 <li><p><a href={`${window.location.href}?noHeader=true`}>Direct link without header</a></p></li>
-                <li><p>IPFS hash: {entry.identifier}</p></li>
+                <li><p>IPFS hash: {entryToShow.identifier}</p></li>
               </ul>
             </div>
           </div>

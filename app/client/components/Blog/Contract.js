@@ -23,6 +23,13 @@ class Contract {
     });
   }
 
+  countUpdates(callback) {
+    this._remoteInstance().numberOfUpdates.call(function(error, numberOfUpdates){
+      let count = parseInt(numberOfUpdates);
+      callback(count);
+    });
+  }
+
   publishPost(post, registerEvent, callback) {
     const postAsBuffer = new Buffer(JSON.stringify(post))
 
@@ -38,7 +45,28 @@ class Contract {
         registerEvent(tx, this.address, post.title);
 
         this.waitForTransaction(tx).then(function(a) {
-          callback(hash);
+          callback();
+        });
+      }.bind(this));
+    }.bind(this));
+  }
+
+  updatePost(post, registerEvent, callback) {
+    const postAsBuffer = new Buffer(JSON.stringify(post))
+
+    this.uploadContent(postAsBuffer).
+      then(hash => this.registerUpdateInTheContract(hash, post, registerEvent, callback));
+  }
+
+  registerUpdateInTheContract(hash, post, registerEvent, callback) {
+    this.lightWalletClient.eth.getAccounts(function(error, accounts) {
+      this._remoteInstance().updatePost(post.id, hash, {
+        from: accounts[0]
+      }, function(error, tx) {
+        registerEvent(tx, this.address, post.title);
+
+        this.waitForTransaction(tx).then(function() {
+          callback(post.id);
         });
       }.bind(this));
     }.bind(this));
@@ -128,6 +156,47 @@ class Contract {
     });
   }
 
+  loadUpdates(callback) {
+    this._remoteInstance().numberOfUpdates.call(function(error, numberOfUpdates){
+      let count = parseInt(numberOfUpdates);
+      this._loadUpdates(count, callback);
+    }.bind(this));
+  }
+
+  _loadUpdates(count, callback) {
+    for(var reference = 0; reference < count; reference++) {
+      this._loadUpdate(reference, callback);
+    }
+  }
+
+  _loadUpdate(reference, callback) {
+    this._remoteInstance().getUpdate(reference, function(error, record){
+      const update = {
+        parent: parseInt(record[0]),
+        identifier: record[1],
+        date: new Date(record[2] * 1000),
+      }
+
+      const settings = new Settings();
+
+      let ipfsNode = { host: settings.host(), port: settings.port(), protocol: settings.protocol() };
+      const ipfs = ipfsAPI(ipfsNode)
+
+      ipfs.cat(update.identifier, {buffer: true}, function (err, res) {
+        const rawContent = new Buffer(res).toString();
+        const structuredContent = JSON.parse(rawContent)
+
+        update.title = structuredContent.title;
+        update.content = structuredContent.content;
+        update.id = reference;
+        update.parent = update.parent;
+
+        callback(update);
+      });
+    });
+  }
+
+
   checkIfItsAValidBlog(callback) {
     const supportedVersions = [
       '0.1',
@@ -150,7 +219,7 @@ class Contract {
   }
 
   _remoteInstance() {
-    const abi = '[{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"posts","outputs":[{"name":"content","type":"string"},{"name":"time","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_id","type":"uint256"}],"name":"getPost","outputs":[{"name":"_ipfsReference","type":"string"},{"name":"time","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"title","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_title","type":"string"}],"name":"setTitle","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"ipfsReference","type":"string"}],"name":"publishPost","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"numberOfPosts","outputs":[{"name":"_count","type":"uint256"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"VERSION","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"inputs":[{"name":"_title","type":"string"}],"payable":false,"type":"constructor"}]'
+    const abi = '[{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"posts","outputs":[{"name":"content","type":"string"},{"name":"time","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_id","type":"uint256"}],"name":"getUpdate","outputs":[{"name":"parent","type":"uint256"},{"name":"_ipfsReference","type":"string"},{"name":"time","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"_id","type":"uint256"}],"name":"getPost","outputs":[{"name":"_ipfsReference","type":"string"},{"name":"time","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"title","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_title","type":"string"}],"name":"setTitle","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"parent","type":"uint256"},{"name":"ipfsReference","type":"string"}],"name":"updatePost","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"updates","outputs":[{"name":"parent","type":"uint256"},{"name":"content","type":"string"},{"name":"time","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"ipfsReference","type":"string"}],"name":"publishPost","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"numberOfPosts","outputs":[{"name":"_count","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"numberOfUpdates","outputs":[{"name":"_count","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"VERSION","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[{"name":"_title","type":"string"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"}]'
     const contractWithAbi = this.lightWalletClient.eth.contract(JSON.parse(abi));
     return contractWithAbi.at(this.address);
   }

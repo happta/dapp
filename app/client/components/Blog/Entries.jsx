@@ -9,20 +9,26 @@ class Entries extends Component {
 
     this.state = {
       posts: [],
+      updates: [],
       postsLoading: true,
-      postsCount: -1
+      postsCount: -1,
+      updatesLoading: true,
+      updatesCount: -1
     }
 
     this.handlePostCount = this.handlePostCount.bind(this)
     this.handlePostLoad = this.handlePostLoad.bind(this)
+    this.handleUpdatesCount = this.handleUpdatesCount.bind(this)
+    this.handleUpdatesLoad = this.handleUpdatesLoad.bind(this)
   }
 
   componentDidMount() {
     this.fetchPosts()
+    this.fetchUpdates()
   }
 
   render() {
-    if(this.state.postsLoading) {
+    if(this.state.postsLoading || this.state.updatesLoading) {
       return <Spinner />;
     }
 
@@ -35,14 +41,14 @@ class Entries extends Component {
     }
 
     if(this.props.target) {
-      return this.singleEntry(this.props.target);
+      return this.singleEntry(this.props.target, this.props.version);
     } else {
       return this.allEntries();
     }
   }
 
-  singleEntry(target) {
-    const featuredPost = this.state.posts.find(function(post) {
+  singleEntry(target, version) {
+    const featuredPost = this.entriesWithUpdates().find(function(post) {
       return post.id == this.props.target
     }.bind(this));
 
@@ -50,15 +56,25 @@ class Entries extends Component {
       return <div>Not found</div>
     }
 
-    return (<ContentView entry={featuredPost} rootPath={this.props.rootPath} />)
+    return (<ContentView isTheOwner={this.props.isTheOwner} entry={featuredPost} version={version} rootPath={this.props.rootPath} />)
   }
 
   allEntries() {
-    const entriesViews = this.state.posts.sort(this.newPostsFirst).map(function(post) {
+    const entriesViews = this.entriesWithUpdates().map(function(post) {
       return <Entry rootPath={this.props.rootPath} entry={post} key={`${post.id}${post.identifier}${post.date}`} />
     }.bind(this));
 
     return entriesViews;
+  }
+
+  entriesWithUpdates() {
+    return this.state.posts.map(function(post){
+      post['updates'] = this.state.updates.filter(function(update){
+        return update.parent == post.id
+      }).sort(this.newPostsFirst);
+
+      return post
+    }.bind(this)).sort(this.newPostsFirst);
   }
 
   newPostsFirst(aPost, anotherPost) {
@@ -68,6 +84,11 @@ class Entries extends Component {
   fetchPosts() {
     this.props.contract.countPosts(this.handlePostCount)
     this.props.contract.loadPosts(this.handlePostLoad)
+  }
+
+  fetchUpdates() {
+    this.props.contract.countUpdates(this.handleUpdatesCount)
+    this.props.contract.loadUpdates(this.handleUpdatesLoad)
   }
 
   handlePostLoad(post) {
@@ -89,6 +110,27 @@ class Entries extends Component {
     this.setState({
       postsCount: count
     }, this.checkIfAllPostsAreLoaded)
+  }
+
+  handleUpdatesLoad(update) {
+    const updates = this.state.updates
+    updates.push(update);
+
+    this.setState({ updates: updates }, this.checkIfAllUpdatesAreLoaded);
+  }
+
+  checkIfAllUpdatesAreLoaded() {
+    if(this.state.updates.length == this.state.updatesCount) {
+      this.setState({
+        updatesLoading: false
+      });
+    }
+  }
+
+  handleUpdatesCount(count) {
+    this.setState({
+      updatesCount: count
+    }, this.checkIfAllUpdatesAreLoaded)
   }
 }
 

@@ -9,12 +9,12 @@ import TransactionsHistory from './TransactionsHistory'
 
 import showdown from 'showdown';
 
-class Publish extends Component {
+class Update extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      publishingPost: false
+      updatingPost: false
     }
 
     this.network = this.props.match.params.network;
@@ -22,12 +22,13 @@ class Publish extends Component {
 
     this.lightWalletClient = this.props.lightWalletClient;
 
-    this.publishEntry = this.publishEntry.bind(this)
+    this.updateEntry = this.updateEntry.bind(this)
+    this.contract = new Contract(this.lightWalletClient, this.address);
   }
 
   componentDidMount() {
     this.editor = new SimpleMDE({
-      element: document.getElementById("newPostContent"),
+      element: document.getElementById("updatePostContent"),
       spellChecker: false,
       previewRender: function(plainText) {
         const converter = new showdown.Converter();
@@ -37,7 +38,7 @@ class Publish extends Component {
   }
 
   render() {
-    if(this.state.publishingPost) {
+    if(this.state.updatingPost) {
       return (
         <section className="container page-body-wrapper">
           <div className="content-wrapper full-page-wrapper">
@@ -52,33 +53,33 @@ class Publish extends Component {
         <div className="content-wrapper full-page-wrapper">
           <form className="forms-sample">
             <div className="form-group">
-              <label htmlFor="newPostTitle">Title:</label>
-              <input type="text" className="form-control p-input" id="newPostTitle"/>
+              <label htmlFor="updatePostTitle">Title:</label>
+              <input type="text" className="form-control p-input" id="updatePostTitle"/>
             </div>
             <div className="form-group">
-              <label htmlFor="newPostContent">Content (in markdown):</label>
-              <textarea id="newPostContent"></textarea>
+              <label htmlFor="updatePostContent">Content (in markdown):</label>
+              <textarea id="updatePostContent"></textarea>
             </div>
-            <button className="btn btn-primary cursor" onClick={this.publishEntry}>Publish</button>
+            <button className="btn btn-primary cursor" onClick={this.updateEntry}>Publish</button>
           </form>
         </div>
       </section>
     )
   }
 
-  publishEntry(event) {
+  updateEntry(event) {
     event.preventDefault();
 
     this.setState({
-      publishingPost: true
+      updatingPost: true
     })
 
-    const title = document.getElementById("newPostTitle").value;
+    const title = document.getElementById("updatePostTitle").value;
     const content = this.editor.value();
 
-    const post = { title: title, content: content }
+    const post = { id: this.props.match.params.reference, title: title, content: content }
 
-    new Contract(this.props.lightWalletClient, this.address).publishPost(post, this.registerEvent.bind(this), this.redirectToPublishedContent.bind(this));
+    this.contract.updatePost(post, this.registerEvent.bind(this), this.redirectToUpdatedContent.bind(this));
   }
 
   registerEvent(tx, address, title) {
@@ -88,7 +89,7 @@ class Publish extends Component {
 
     const transactionsHistory = new TransactionsHistory(this.props.match.params.network);
 
-    const eventTitle = "Publish content in publishing platform";
+    const eventTitle = "Update content";
     const additionalInfo = {
       'Title': title,
       'Contract address': address
@@ -97,7 +98,7 @@ class Publish extends Component {
     transactionsHistory.registerNewTransaction(tx, eventTitle, additionalInfo);
   }
 
-  redirectToPublishedContent() {
+  redirectToUpdatedContent(reference) {
     const contract = new Contract(this.props.lightWalletClient, this.address)
 
     setTimeout(function() {
@@ -106,12 +107,10 @@ class Publish extends Component {
       })
 
       contract.countPosts(function(numberOfPosts){
-        const reference = numberOfPosts - 1;
-
         this.props.history.push(`/${this.network}/${this.address}/${reference}`);
       }.bind(this))
     }.bind(this), 500);
   }
 }
 
-export default Publish;
+export default Update;
