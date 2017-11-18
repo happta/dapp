@@ -7,13 +7,19 @@ import { NavLink } from 'react-router-dom'
 class ContentView extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      showSharingArea: false,
+      showHistoryArea: false
+    }
   }
 
   entryToShow() {
     const entry = this.props.entry;
+    const updates = Object.assign([], entry.updates);
 
     if(this.props.version) {
-      const versionEntries = entry.updates.reverse()
+      const versionEntries = updates.reverse()
       versionEntries.unshift(entry);
 
       return versionEntries[this.props.version];
@@ -22,12 +28,27 @@ class ContentView extends Component {
     return entry.updates[0] || entry
   }
 
+  historicEntries() {
+    const baseEntry = this.props.entry;
+    const versionsUpdates = Object.assign([], baseEntry.updates);
+    versionsUpdates.push(baseEntry);
+
+    return versionsUpdates.map(function(version){
+      const currentVersionIndex = [].concat(versionsUpdates).reverse().
+        findIndex(function(e){
+          return e.id == version.id && e.parent == version.parent
+        });
+
+      return (<p key={version.title} >
+        <NavLink to={`${this.props.rootPath}/${baseEntry.id}/${currentVersionIndex}`}>{version.date.toString()} | {version.title} {currentVersionIndex == this.props.version && <i className="mdi mdi-arrow-left"></i>}</NavLink>
+      </p>)
+    }.bind(this))
+  }
+
   render() {
     const converter = new showdown.Converter();
 
     let entryToShow = this.entryToShow();
-
-    console.log(entryToShow);
 
     const rawContent = converter.makeHtml(entryToShow.content);
     const sanitizedContent = DOMPurify.sanitize(rawContent);
@@ -44,18 +65,34 @@ class ContentView extends Component {
             <div>
               <div className="actual-content" dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div>
               <hr />
-              <h2>Share:</h2>
-              <ul>
-                <li><p><a href={`${window.location.href}`}>Direct link</a></p></li>
-                <li><p><a href={`${window.location.href}?noHeader=true`}>Direct link without header</a></p></li>
-                <li><p>IPFS hash: {entryToShow.identifier}</p></li>
-              </ul>
+              <button className="btn btn-primary sharing-button cursor" onClick={this.toggleSharingArea.bind(this)}>Share <i className="mdi mdi-arrow-down"></i></button>
+              {this.state.showSharingArea && <div className="sharing-area">
+                <p><a href={`${window.location.href}`}>Direct link</a></p>
+                <p><a href={`${window.location.href}?noHeader=true`}>Direct link without header</a></p>
+                <p>IPFS hash: {entryToShow.identifier}</p>
+              </div>}
             </div>
           </div>
         </div>
+        <button className="btn btn-secondary sharing-button cursor" onClick={this.toggleHistoryArea.bind(this)}>History <i className="mdi mdi-arrow-down"></i></button>
+        {this.state.showHistoryArea && <div className="history-area">
+          {this.historicEntries()}
+        </div>}
         <NavLink id="goToRootLink" to={this.props.rootPath}><i className="mdi mdi-keyboard-backspace"></i> Go to the rest of the content</NavLink>
       </div>
     );
+  }
+
+  toggleSharingArea() {
+    this.setState({
+      showSharingArea: !this.state.showSharingArea
+    })
+  }
+
+  toggleHistoryArea() {
+    this.setState({
+      showHistoryArea: !this.state.showHistoryArea
+    })
   }
 
   formatDate(date) {
