@@ -23,7 +23,6 @@ class Publish extends Component {
     this.lightWalletClient = this.props.lightWalletClient;
 
     this.publishEntry = this.publishEntry.bind(this)
-    this.contract = new Contract(this.lightWalletClient, this.address);
   }
 
   componentDidMount() {
@@ -79,7 +78,7 @@ class Publish extends Component {
 
     const post = { title: title, content: content }
 
-    this.contract.publishPost(post, this.registerEvent.bind(this), this.redirectToPublishedContent.bind(this));
+    new Contract(this.props.lightWalletClient, this.address).publishPost(post, this.registerEvent.bind(this), this.redirectToPublishedContent.bind(this));
   }
 
   registerEvent(tx, address, title) {
@@ -94,12 +93,20 @@ class Publish extends Component {
     transactionsHistory.registerNewTransaction(tx, eventTitle, additionalInfo);
   }
 
-  redirectToPublishedContent(reference) {
-    this.setState({
-      publishingPost: false
-    })
+  redirectToPublishedContent() {
+    const contract = new Contract(this.props.lightWalletClient, this.address)
 
-    this.props.history.push(`/${this.network}/${this.address}/${reference}`);
+    setTimeout(function() {
+      this.setState({
+        publishingPost: false
+      })
+
+      contract.countPosts(function(numberOfPosts){
+        const reference = numberOfPosts - 1;
+
+        this.props.history.push(`/${this.network}/${this.address}/${reference}`);
+      }.bind(this))
+    }.bind(this), 500);
   }
 }
 

@@ -43,7 +43,7 @@ class Entries extends Component {
 
   singleEntry(target) {
     const featuredPost = this.state.posts.find(function(post) {
-      return post.identifier == this.props.target
+      return post.id == this.props.target
     }.bind(this));
 
     if (!featuredPost) {
@@ -55,7 +55,7 @@ class Entries extends Component {
 
   allEntries() {
     const entriesViews = this.state.posts.sort(this.newPostsFirst).map(function(post) {
-      return <Entry rootPath={this.props.rootPath} entry={post} key={`${post.identifier}${post.date}`} />
+      return <Entry rootPath={this.props.rootPath} entry={post} key={`${post.id}${post.identifier}${post.date}`} />
     }.bind(this));
 
     return entriesViews;

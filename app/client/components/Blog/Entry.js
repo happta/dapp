@@ -23,7 +23,7 @@ class Entry extends Component {
       <div>
         <div className="card Entry" data-title={title} ipfs-hash={entry.identifier}>
             <div className="card-body Entry-body">
-              <NavLink className="like-no-link" to={`${this.props.rootPath}/${entry.identifier}`}>
+              <NavLink className="like-no-link" to={`${this.props.rootPath}/${entry.id}`}>
                 <div className="cursor">
                   <h2>{title}</h2>
                   <p className="date">on {this.formatDate(entry.date)}</p>

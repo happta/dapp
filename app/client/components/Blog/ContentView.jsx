@@ -31,8 +31,8 @@ class ContentView extends Component {
               <hr />
               <h2>Share:</h2>
               <ul>
-                <li><p><a href={`${window.location.href}/${entry.identifier}`}>Direct link</a></p></li>
-                <li><p><a href={`${window.location.href}/${entry.identifier}?noHeader=true`}>Direct link without header</a></p></li>
+                <li><p><a href={`${window.location.href}`}>Direct link</a></p></li>
+                <li><p><a href={`${window.location.href}?noHeader=true`}>Direct link without header</a></p></li>
                 <li><p>IPFS hash: {entry.identifier}</p></li>
               </ul>
             </div>
