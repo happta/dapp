@@ -130,7 +130,8 @@ class Contract {
 
   checkIfItsAValidBlog(callback) {
     const supportedVersions = [
-      '0.1'
+      '0.1',
+      '0.2'
     ]
 
     try {

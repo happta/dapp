@@ -35,7 +35,7 @@ var rawContractData = facedContract.new.getData(title, {
 var rawTx = {
   nonce: web3.toHex(web3.eth.getTransactionCount(config.PUBLIC_KEY)),
   gasPrice: web3.toHex(21000000000),
-  gasLimit: web3.toHex(1000000),
+  gasLimit: web3.toHex(1500000),
   data: rawContractData
 }
 

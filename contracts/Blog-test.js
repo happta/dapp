@@ -38,7 +38,7 @@ describe("Blog", function(){
         var publishingDate = post[relations['time']]
 
         assert.equal(savedIPSFHash, anIPFSHash);
-        assert(publishingDate > initialTime);
+        assert(publishingDate >= initialTime);
       }
 
       deployBlogContract().
@@ -198,7 +198,7 @@ describe("Blog", function(){
         var parent = post[relations['parent']]
 
         assert.equal(savedIPSFHash, anIPFSHash);
-        assert(publishingDate > initialTime);
+        assert(publishingDate >= initialTime);
         assert.equal(parent, aParentPostId);
       }
 
