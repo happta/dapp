@@ -53,7 +53,7 @@ class ContractSelector extends Component {
                     We use the project to release the project updates.
                   </p>
 
-                  <a href="http://dapp.happta.com/mainnet/0x2f71749f84131a4c1ad4ddeec15fde33a58ddf93" className="btn btn-primary cursor">See it in action</a>
+                  <a href="http://dapp.happta.com/mainnet/0x7c152ebad349d53fc5bf748f96e0408ebec11e19" className="btn btn-primary cursor">See it in action</a>
                 </div>
               </div>
             </div>
